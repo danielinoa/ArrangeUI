@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "coregraphicsplus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/danielinoa/CoreGraphicsPlus.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "797bcce92f37a71a40d0bebdd2333a0209252f33"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "branch" : "main",
+        "revision" : "939cfd25234472b4dc91c3caeab304d15bca9a73"
+      }
+    },
+    {
+      "identity" : "swiftplus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/danielinoa/SwiftPlus",
+      "state" : {
+        "branch" : "main",
+        "revision" : "175d4b924551aa6a923aba292ce7976ff4294fab"
+      }
+    }
+  ],
+  "version" : 2
+}
