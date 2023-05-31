@@ -39,11 +39,12 @@ public class PaddingView: UIView {
             height: proposedSize.height - insets.top - insets.bottom
         )
         let fittingSize = view.sizeThatFits(adjustedProposedSize)
-        sizeProposalCache[proposedSize] = proposedSize
-        return .init(
+        let size = CGSize(
             width: fittingSize.width + insets.left + insets.right,
             height: fittingSize.height + insets.top + insets.bottom
         )
+        sizeProposalCache[proposedSize] = size
+        return size
     }
 
     public override func layoutSubviews() {
