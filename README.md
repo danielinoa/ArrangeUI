@@ -4,16 +4,15 @@
 
 ### What
 
-`ArrangeUI` is a library to supplement UIKit with views that use a layout strategy similar to that of SwiftUI.
+`ArrangeUI` is a supplemental `UIKit` package made up of views (`HStackView`, `VStackView`, `PaddingView`, `SpacerView`, etc) that employ a `SwiftUI`-like layout strategy.
 
-This library (`HStackView`, `VStackView`, `PaddingView`, `SpacerView`, etc) makes it easy to build layouts and UI that would otherwise be cumbersome to build with: resizing-masks, AutoLayout, or raw frame-based layouts.
+This library makes it easy to build layouts that would otherwise be cumbersome to accomplish with resizing-masks, Auto Layout constraints, or raw frame-based layouts.
 
 ### How
 
-The layout strategy works as follows: _a parent view proposes a size to its child view, typically its bounds, and the child responds with its ideal fitting size. The parent-view honors the child-view's reported size and positions it accordingly._
+The `SwiftUI`-like layout strategy works as follows: _a parent view proposes a size to its child view, typically its bounds, and the child responds with its ideal fitting size. The parent-view honors the child-view's reported size and positions it accordingly._ To accomplish this `ArrangeUI` views leverage the `UIView`'s existing arrangement methods (`intrinsicContentSize`, `sizeThatFits`, and `layoutSubviews`) and tap into the UIKit view-tree render mechanism.
 
-All `ArrangeUI` views are frame-based under-the-hood and fully compatible with all the aforementioned approaches used in UIKit. 
-To accomplish this SwiftUI-like layout `ArrangeUI` views leverage the `UIView`'s existing arrangement methods (`intrinsicContentSize`, `sizeThatFits`, and `layoutSubviews`) and tap into the UIKit view-tree render mechanism.
+All `ArrangeUI` views are frame-based under-the-hood and fully compatible with all the aforementioned layout techniques used in UIKit.
 
 ### Why
 
