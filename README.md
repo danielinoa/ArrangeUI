@@ -32,7 +32,7 @@ To install using Swift Package Manager, add this to the dependencies section in 
 
 ## Notes
 
-ArrangeUI, unlike SwiftUI, is exclusively concerned with views and layouts. It does not manage the lifecycle of your view objects and does not opine on how state should be propagated to said views.
+`ArrangeUI`, unlike `SwiftUI`, is exclusively concerned with views and layouts. It does not manage the lifecycle of your view objects and does not opine on how state should be propagated to said views.
 
 # Contributing
 
