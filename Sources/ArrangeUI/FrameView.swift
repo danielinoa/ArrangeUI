@@ -36,6 +36,13 @@ public class FrameView: UIView {
 
     // MARK: - Layout
 
+    public override var intrinsicContentSize: CGSize {
+        .init(
+            width: width ?? .zero,
+            height: height ?? .zero
+        )
+    }
+
     public override func sizeThatFits(_ proposedSize: CGSize) -> CGSize {
         .init(
             width: width ?? proposedSize.width,

@@ -67,6 +67,14 @@ public class VStackView: UIView {
 
     // MARK: - Layout
 
+    public override var intrinsicContentSize: CGSize {
+        let totalGapSpacing = arrangedSubviews.hasElements ? spacing * Double(arrangedSubviews.count - 1) : .zero
+        let viewsHeight = arrangedSubviews.map(\.intrinsicContentSize.height).reduce(.zero, +)
+        let totalHeight = viewsHeight + totalGapSpacing
+        let maxWidth = arrangedSubviews.map(\.intrinsicContentSize.width).max() ?? .zero
+        return .init(width: maxWidth, height: totalHeight)
+    }
+
     public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
         if let cachedSize = sizeProposalCache[proposedSize] { return cachedSize }
         let totalGapSpacing = arrangedSubviews.hasElements ? spacing * Double(arrangedSubviews.count - 1) : .zero

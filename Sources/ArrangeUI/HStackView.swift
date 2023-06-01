@@ -67,6 +67,14 @@ public class HStackView: UIView {
 
     // MARK: - Layout
 
+    public override var intrinsicContentSize: CGSize {
+        let totalGapSpacing = arrangedSubviews.hasElements ? spacing * Double(arrangedSubviews.count - 1) : .zero
+        let viewsWidth = arrangedSubviews.map(\.intrinsicContentSize.width).reduce(.zero, +)
+        let totalWidth = viewsWidth + totalGapSpacing
+        let maxHeight = arrangedSubviews.map(\.intrinsicContentSize.height).max() ?? .zero
+        return .init(width: totalWidth, height: maxHeight)
+    }
+
     public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
         if let cachedSize = sizeProposalCache[proposedSize] { return cachedSize }
         let totalGapSpacing = arrangedSubviews.hasElements ? spacing * Double(arrangedSubviews.count - 1) : .zero

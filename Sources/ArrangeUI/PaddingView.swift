@@ -32,6 +32,13 @@ public class PaddingView: UIView {
 
     // MARK: - Layout
 
+    public override var intrinsicContentSize: CGSize {
+        .init(
+            width: view.intrinsicContentSize.width + insets.left + insets.right,
+            height: view.intrinsicContentSize.height + insets.top + insets.bottom
+        )
+    }
+
     public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
         if let cachedSize = sizeProposalCache[proposedSize] { return cachedSize }
         let adjustedProposedSize = CGSize(

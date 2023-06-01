@@ -19,6 +19,10 @@ public class SpacerView: UIView {
 
     // MARK: - Layout
 
+    public override var intrinsicContentSize: CGSize {
+        .zero
+    }
+
     public override func sizeThatFits(_ size: ProposedSize) -> PreferredSize {
         size
     }
