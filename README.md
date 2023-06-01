@@ -13,7 +13,7 @@ This library (`HStackView`, `VStackView`, `PaddingView`, `SpacerView`, etc) make
 The layout strategy works as follows: _a parent view proposes a size to its child view, typically its bounds, and the child responds with its ideal fitting size. The parent-view honors the child-view's reported size and positions it accordingly._
 
 All `ArrangeUI` views are frame-based under-the-hood and fully compatible with all the aforementioned approaches used in UIKit. 
-To accomplish this SwiftUI-like layout `ArrangeUI` views leverage the `UIView`'s `sizeThatFits` and `layoutSubviews` methods, and tap into the existing UIKit layout propagation mechanism.
+To accomplish this SwiftUI-like layout `ArrangeUI` views leverage the `UIView`'s existing arrangement methods (`intrinsicContentSize`, `sizeThatFits`, and `layoutSubviews`) and tap into the UIKit view-tree render mechanism.
 
 ### Why
 
