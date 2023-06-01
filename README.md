@@ -10,7 +10,8 @@ This library makes it easy to build layouts that would otherwise be cumbersome t
 
 ### How
 
-The `SwiftUI`-like layout strategy works as follows: _a parent view proposes a size to its child view, typically its bounds, and the child responds with its ideal fitting size. The parent-view honors the child-view's reported size and positions it accordingly._ To accomplish this `ArrangeUI` views leverage the `UIView`'s existing arrangement methods (`intrinsicContentSize`, `sizeThatFits`, and `layoutSubviews`) and tap into the UIKit view-tree render mechanism.
+The layout strategy works as follows: _a parent view proposes a size to its child view, typically its bounds, and the child responds with its ideal fitting size. The parent-view honors the child-view's reported size and positions it accordingly._ 
+To accomplish this `ArrangeUI` views leverage the `UIView`'s existing arrangement methods (`intrinsicContentSize`, `sizeThatFits`, and `layoutSubviews`) and tap into the UIKit view-tree render mechanism.
 
 All `ArrangeUI` views are frame-based under-the-hood and fully compatible with all the aforementioned layout techniques used in UIKit.
 
