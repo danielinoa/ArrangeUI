@@ -10,6 +10,7 @@ public class VStackView: UIView {
 
     public var alignment: HorizontalAlignment {
         didSet {
+            guard alignment != oldValue else { return }
             setNeedsArrangement()
         }
     }
@@ -17,6 +18,7 @@ public class VStackView: UIView {
     /// The vertical distance between adjacent items within the stack.
     public var spacing: Double {
         didSet {
+            guard spacing != oldValue else { return }
             sizeProposalCache.removeAll()
             setNeedsArrangement()
         }
@@ -56,11 +58,7 @@ public class VStackView: UIView {
     // MARK: - Hierarchy
 
     @discardableResult
-    public func arrange(alignment: HorizontalAlignment = .center,
-                        spacing: Double = .zero,
-                        @ViewBuilder _ content: () -> ViewBuilder.Composite) -> Self {
-        self.alignment = alignment
-        self.spacing = spacing
+    public func callAsFunction(@ViewBuilder _ content: () -> ViewBuilder.Composite) -> Self {
         arrangedSubviews = content().items().compactCast()
         return self
     }

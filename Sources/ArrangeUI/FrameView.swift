@@ -14,6 +14,7 @@ public class FrameView: UIView {
 
     public var alignment: Alignment {
         didSet {
+            guard alignment != oldValue else { return }
             setNeedsArrangement()
         }
     }
