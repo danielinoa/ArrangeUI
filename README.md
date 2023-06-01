@@ -30,6 +30,10 @@ To install using Swift Package Manager, add this to the dependencies section in 
 .package(url: "https://github.com/danielinoa/ArrangeUI.git", .branch("main"))
 ```
 
+## Notes
+
+ArrangeUI, unlike SwiftUI, is exclusively concerned with views and layouts. It does not manage the lifecycle of your view objects and does not opine on how state should be propagated to said views.
+
 # Contributing
 
 Feel free to open an issue if you have questions about how to use `ArrangeUI`, discovered a bug, or want to improve the implementation or interface.
