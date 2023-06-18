@@ -5,8 +5,8 @@
 import UIKit
 
 public struct PriorityGroup: Hashable {
-    let priority: Int
-    let views: [UIView]
+    public let priority: Int
+    public let views: [UIView]
 }
 
 public extension PriorityGroup {
