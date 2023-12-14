@@ -136,7 +136,7 @@ extension VStackView {
         // The space that remains as views occupy the proposed size.
         var sharedAvailableHeight = size.height
 
-        // The specified array of views, sorted in ascendeding manner based on their fitting height.
+        // The specified array of views, sorted in ascending manner based on their fitting height.
         var heightAscendingViews = views.sorted { $0.sizeThatFits(size).height < $1.sizeThatFits(size).height }
 
         // When calculating sizes all views start with an equal amount space within the "shared available space".

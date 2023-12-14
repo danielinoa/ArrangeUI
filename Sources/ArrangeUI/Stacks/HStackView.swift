@@ -136,7 +136,7 @@ extension HStackView {
         // The space that remains as views occupy the proposed size.
         var sharedAvailableWidth = size.width
 
-        // The specified array of views, sorted in ascendeding manner based on their fitting width.
+        // The specified array of views, sorted in ascending manner based on their fitting width.
         var widthAscendingViews = views.sorted { $0.sizeThatFits(size).width < $1.sizeThatFits(size).width }
 
         // When calculating sizes all views start with an equal amount space within the "shared available space".
