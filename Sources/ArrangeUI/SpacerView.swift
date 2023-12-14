@@ -11,6 +11,7 @@ public class SpacerView: UIView {
     public init() {
         super.init(frame: .zero)
         arrangementPriority = -1
+        isUserInteractionEnabled = false
     }
 
     public required init?(coder: NSCoder) {
