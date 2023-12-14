@@ -36,5 +36,6 @@ public enum ViewBuilder {
     }
 }
 
+/// This protocol works as an union type between UIView and Composite.
 public protocol ViewBuilderComponent {}
 extension UIView: ViewBuilderComponent {}
