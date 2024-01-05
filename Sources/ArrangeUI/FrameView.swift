@@ -3,6 +3,7 @@
 //
 
 import UIKit
+import Rectangular
 
 public class FrameView: UIView {
 

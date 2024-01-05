@@ -17,7 +17,8 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/danielinoa/SwiftPlus.git", branch: "main"),
         .package(url: "https://github.com/danielinoa/CoreGraphicsPlus.git", branch: "main"),
-        .package(url: "https://github.com/apple/swift-collections.git", branch: "main")
+        .package(url: "https://github.com/apple/swift-collections.git", branch: "main"),
+        .package(url: "https://github.com/danielinoa/Rectangular", branch: "main")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -26,6 +27,7 @@ let package = Package(
             "SwiftPlus",
             "CoreGraphicsPlus",
             .product(name: "Collections", package: "swift-collections"),
+            "Rectangular",
         ]),
         .testTarget(name: "ArrangeUITests", dependencies: [
             "ArrangeUI",

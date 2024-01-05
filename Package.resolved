@@ -10,9 +10,18 @@
       }
     },
     {
+      "identity" : "rectangular",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/danielinoa/Rectangular",
+      "state" : {
+        "branch" : "main",
+        "revision" : "7ce1349abcd2372f29f910197e1ec8961da7f0eb"
+      }
+    },
+    {
       "identity" : "swift-collections",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-collections",
+      "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
         "branch" : "main",
         "revision" : "939cfd25234472b4dc91c3caeab304d15bca9a73"
@@ -21,7 +30,7 @@
     {
       "identity" : "swiftplus",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/danielinoa/SwiftPlus",
+      "location" : "https://github.com/danielinoa/SwiftPlus.git",
       "state" : {
         "branch" : "main",
         "revision" : "175d4b924551aa6a923aba292ce7976ff4294fab"
