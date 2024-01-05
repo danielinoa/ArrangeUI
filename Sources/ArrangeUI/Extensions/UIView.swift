@@ -19,3 +19,18 @@ extension UIView: LayoutItem {
         sizeThatFits(size.asCGSize).asSize
     }
 }
+
+extension UIView {
+
+    func nearestAncestorOfType(anyOf types: UIView.Type...) -> UIView? {
+        var parent: UIView? = superview
+        while parent.isNotNil {
+            let parentType = type(of: parent!)
+            if types.contains(where: { $0 == parentType }) {
+                return parent
+            }
+            parent = parent?.superview
+        }
+        return nil
+    }
+}
