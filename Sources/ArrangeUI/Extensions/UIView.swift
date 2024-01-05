@@ -7,6 +7,10 @@ import Rectangular
 
 extension UIView: LayoutItem {
 
+    public var priority: Int {
+        arrangementPriority
+    }
+
     public var intrinsicSize: Size {
         intrinsicContentSize.asSize
     }
