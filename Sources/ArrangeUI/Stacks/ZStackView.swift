@@ -17,7 +17,6 @@ public class ZStackView: UIView {
     /// The list of views arranged by the stack view.
     public var arrangedSubviews: [UIView] = [] {
         didSet {
-            sizeProposalCache.removeAll()
             let diff = (arrangedSubviews as [UIView]).difference(from: oldValue)
             diff.forEach { change in
                 switch change {
@@ -30,8 +29,6 @@ public class ZStackView: UIView {
             setNeedsArrangement()
         }
     }
-
-    private var sizeProposalCache: [ProposedSize: PreferredSize] = [:]
 
     // MARK: - Lifecycle
 

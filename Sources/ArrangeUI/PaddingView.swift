@@ -11,12 +11,9 @@ public class PaddingView: UIView {
     public var insets: UIEdgeInsets {
         didSet {
             guard insets != oldValue else { return }
-            sizeProposalCache.removeAll()
             setNeedsArrangement()
         }
     }
-
-    private var sizeProposalCache: [ProposedSize: PreferredSize] = [:]
 
     // MARK: - Lifecycle
 
