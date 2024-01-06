@@ -61,12 +61,10 @@ public class ZStackView: UIView {
     }
 
     public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
-        if let cachedSize = sizeProposalCache[proposedSize] { return cachedSize }
         let fittingSizes = arrangedSubviews.map { $0.sizeThatFits(proposedSize) }
         let maxFittingWidth = fittingSizes.map(\.width).max() ?? .zero
         let maxFittingHeight = fittingSizes.map(\.height).max() ?? .zero
         let size = CGSize(width: maxFittingWidth, height: maxFittingHeight)
-        sizeProposalCache[proposedSize] = size
         return size
     }
 

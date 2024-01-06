@@ -80,9 +80,7 @@ public class HStackView: UIView {
     }
 
     public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
-        if let cachedSize = sizeProposalCache[proposedSize] { return cachedSize }
         let size = layout.sizeThatFits(items: arrangedSubviews, within: proposedSize.asSize).asCGSize
-        sizeProposalCache[proposedSize] = size
         return size
     }
 

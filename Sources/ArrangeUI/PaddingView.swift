@@ -41,7 +41,6 @@ public class PaddingView: UIView {
     }
 
     public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
-        if let cachedSize = sizeProposalCache[proposedSize] { return cachedSize }
         let adjustedProposedSize = CGSize(
             width: proposedSize.width - insets.left - insets.right,
             height: proposedSize.height - insets.top - insets.bottom
@@ -51,7 +50,6 @@ public class PaddingView: UIView {
             width: fittingSize.width + insets.left + insets.right,
             height: fittingSize.height + insets.top + insets.bottom
         )
-        sizeProposalCache[proposedSize] = size
         return size
     }
 
