@@ -5,7 +5,7 @@
 import CoreGraphics
 import Rectangular
 
-extension Rectangle {
+public extension Rectangle {
 
     var asCGRect: CGRect {
         .init(x: x, y: y, width: width, height: height)

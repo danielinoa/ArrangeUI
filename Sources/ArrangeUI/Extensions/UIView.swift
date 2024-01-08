@@ -20,7 +20,7 @@ extension UIView: LayoutItem {
     }
 }
 
-extension UIView {
+public extension UIView {
 
     func nearestAncestorOfType(anyOf types: UIView.Type...) -> UIView? {
         var parent: UIView? = superview

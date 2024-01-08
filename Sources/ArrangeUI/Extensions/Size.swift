@@ -5,7 +5,7 @@
 import CoreGraphics
 import Rectangular
 
-extension Size {
+public extension Size {
 
     var asCGSize: CGSize {
         .init(width: width, height: height)
