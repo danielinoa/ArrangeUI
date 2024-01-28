@@ -19,4 +19,9 @@ public extension UIView {
         layoutIfNeeded()
         subviews.forEach { $0.cascadeLayoutIfNeeded() }
     }
+
+    func setAncestorsNeedLayout() {
+        setNeedsLayout()
+        superview?.setAncestorsNeedLayout()
+    }
 }
