@@ -3,25 +3,41 @@
 //
 
 import UIKit
+import Combine
+import Rectangular
 
 public class PaddingView: UIView {
 
-    public let view: UIView
-
     public var insets: UIEdgeInsets {
-        didSet {
-            guard insets != oldValue else { return }
-            setNeedsArrangement()
-        }
+        get { subject.value }
+        set { subject.value = newValue }
     }
+
+    private let layout: ZStackLayout = .init(alignment: .center)
+
+    // MARK: - Observation
+
+    private let subject: CurrentValueSubject<UIEdgeInsets, Never>
+    private var cancellables: Set<AnyCancellable> = []
 
     // MARK: - Lifecycle
 
-    public init(_ view: UIView, insets: UIEdgeInsets) {
-        self.view = view
-        self.insets = insets
+    public convenience init(_ value: Double) {
+        let insets = UIEdgeInsets(top: value, left: value, bottom: value, right: value)
+        self.init(insets)
+    }
+
+    public convenience init(_ insets: UIEdgeInsets) {
+        let subject = CurrentValueSubject<UIEdgeInsets, Never>(insets)
+        self.init(subject)
+    }
+
+    public init(_ subject: CurrentValueSubject<UIEdgeInsets, Never>) {
+        self.subject = subject
         super.init(frame: .zero)
-        addSubview(view)
+        subject.sink { [weak self] _ in
+            self?.setNeedsArrangement()
+        }.store(in: &cancellables)
     }
 
     public required init?(coder: NSCoder) {
@@ -31,9 +47,10 @@ public class PaddingView: UIView {
     // MARK: - Layout
 
     public override var intrinsicContentSize: CGSize {
-        .init(
-            width: view.intrinsicContentSize.width + insets.left + insets.right,
-            height: view.intrinsicContentSize.height + insets.top + insets.bottom
+        let size = layout.sizeThatFits(items: subviews).asCGSize
+        return .init(
+            width: size.width + insets.left + insets.right,
+            height: size.height + insets.top + insets.bottom
         )
     }
 
@@ -42,7 +59,7 @@ public class PaddingView: UIView {
             width: proposedSize.width - insets.left - insets.right,
             height: proposedSize.height - insets.top - insets.bottom
         )
-        let fittingSize = view.sizeThatFits(adjustedProposedSize)
+        let fittingSize = layout.sizeThatFits(items: subviews, within: adjustedProposedSize.asSize).asCGSize
         let size = CGSize(
             width: fittingSize.width + insets.left + insets.right,
             height: fittingSize.height + insets.top + insets.bottom
@@ -52,19 +69,43 @@ public class PaddingView: UIView {
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        let viewWidth = bounds.width - insets.left - insets.right
-        let viewHeight = bounds.height - insets.top - insets.bottom
-        view.frame = .init(x: insets.left, y: insets.top, width: viewWidth, height: viewHeight)
+        let adjustedBoundsSize = CGSize(
+            width: bounds.width - insets.left - insets.right,
+            height: bounds.height - insets.top - insets.bottom
+        )
+        let frames = layout.frames(
+            for: subviews,
+            within: Rectangle(
+                origin: .init(x: insets.left, y: insets.top),
+                size: adjustedBoundsSize.asSize
+            )
+        ).map(\.asCGRect)
+        zip(subviews, frames).forEach { view, frame in
+            view.frame = frame
+        }
     }
 }
 
 public extension UIView {
 
-    func padding(_ length: Double) -> PaddingView {
-        .init(self, insets: .init(top: length, left: length, bottom: length, right: length))
+    func padding(_ subject: CurrentValueSubject<UIEdgeInsets, Never>) -> PaddingView {
+        let paddingView = PaddingView(subject)
+        paddingView.addSubview(self)
+        return paddingView
     }
 
-    func padding(_ edgeInsets: UIEdgeInsets) -> PaddingView {
-        .init(self, insets: edgeInsets)
+    func padding(_ value: Double) -> PaddingView {
+        let insets = UIEdgeInsets(top: value, left: value, bottom: value, right: value)
+        let subject = CurrentValueSubject<UIEdgeInsets, Never>(insets)
+        let paddingView = PaddingView(subject)
+        paddingView.addSubview(self)
+        return paddingView
+    }
+
+    func padding(_ insets: UIEdgeInsets) -> PaddingView {
+        let subject = CurrentValueSubject<UIEdgeInsets, Never>(insets)
+        let paddingView = PaddingView(subject)
+        paddingView.addSubview(self)
+        return paddingView
     }
 }
