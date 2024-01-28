@@ -9,27 +9,11 @@ import SwiftPlus
 /// Arranged subviews are positioned at the center.
 public class SafeAreaClampedView: UIView {
 
-    // MARK: - Hierarchy
-
-    public var arrangedSubviews: [UIView] = [] {
-        didSet {
-            oldValue.forEach { $0.removeFromSuperview() }
-            arrangedSubviews.forEach(addSubview)
-            setNeedsArrangement()
-        }
-    }
-
-    @discardableResult
-    public func arrange(@ViewBuilder _ content: () -> ViewBuilder.Composite) -> Self {
-        arrangedSubviews = content().items().compactCast()
-        return self
-    }
-
     // MARK: - Layout
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        arrangedSubviews.forEach { subview in
+        subviews.forEach { subview in
             let safeBounds = bounds.inset(by: safeAreaInsets)
             let preferredSize = subview.sizeThatFits(safeBounds.size)
             subview.frame.size.width = preferredSize.width.clamped(within: ...safeBounds.width)
