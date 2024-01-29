@@ -6,7 +6,7 @@
       "location" : "https://github.com/danielinoa/CoreGraphicsPlus.git",
       "state" : {
         "branch" : "main",
-        "revision" : "797bcce92f37a71a40d0bebdd2333a0209252f33"
+        "revision" : "29fd77181ef4b38556936193a89cd7e7d18b54c2"
       }
     },
     {
@@ -15,7 +15,7 @@
       "location" : "https://github.com/danielinoa/Rectangular",
       "state" : {
         "branch" : "main",
-        "revision" : "7ce1349abcd2372f29f910197e1ec8961da7f0eb"
+        "revision" : "d5dfa0fcf6cd09c65983fbff2f527403de7208f5"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
         "branch" : "main",
-        "revision" : "939cfd25234472b4dc91c3caeab304d15bca9a73"
+        "revision" : "cc1c037a734c5f3b0ca7d47505389ccd31381052"
       }
     },
     {
@@ -33,7 +33,7 @@
       "location" : "https://github.com/danielinoa/SwiftPlus.git",
       "state" : {
         "branch" : "main",
-        "revision" : "175d4b924551aa6a923aba292ce7976ff4294fab"
+        "revision" : "e6031c7a6c6e3ee6f3444e96bfd76119f8141d03"
       }
     }
   ],

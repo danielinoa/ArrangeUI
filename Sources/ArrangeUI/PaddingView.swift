@@ -13,7 +13,7 @@ public class PaddingView: UIView {
         set { subject.value = newValue }
     }
 
-    private let layout: ZStackLayout = .init(alignment: .center)
+    private var layout: PaddingLayout
 
     // MARK: - Observation
 
@@ -34,9 +34,11 @@ public class PaddingView: UIView {
 
     public init(_ subject: CurrentValueSubject<UIEdgeInsets, Never>) {
         self.subject = subject
+        layout = .init(insets: subject.value.asEdgeInsets)
         super.init(frame: .zero)
-        subject.sink { [weak self] _ in
-            self?.setNeedsArrangement()
+        subject.sink { [weak self] insets in
+            self?.layout.insets = insets.asEdgeInsets
+            self?.setAncestorsNeedLayout()
         }.store(in: &cancellables)
     }
 
@@ -47,39 +49,16 @@ public class PaddingView: UIView {
     // MARK: - Layout
 
     public override var intrinsicContentSize: CGSize {
-        let size = layout.sizeThatFits(items: subviews).asCGSize
-        return .init(
-            width: size.width + insets.left + insets.right,
-            height: size.height + insets.top + insets.bottom
-        )
+        layout.sizeThatFits(items: subviews).asCGSize
     }
 
     public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
-        let adjustedProposedSize = CGSize(
-            width: proposedSize.width - insets.left - insets.right,
-            height: proposedSize.height - insets.top - insets.bottom
-        )
-        let fittingSize = layout.sizeThatFits(items: subviews, within: adjustedProposedSize.asSize).asCGSize
-        let size = CGSize(
-            width: fittingSize.width + insets.left + insets.right,
-            height: fittingSize.height + insets.top + insets.bottom
-        )
-        return size
+        layout.sizeThatFits(items: subviews, within: proposedSize.asSize).asCGSize
     }
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        let adjustedBoundsSize = CGSize(
-            width: bounds.width - insets.left - insets.right,
-            height: bounds.height - insets.top - insets.bottom
-        )
-        let frames = layout.frames(
-            for: subviews,
-            within: Rectangle(
-                origin: .init(x: insets.left, y: insets.top),
-                size: adjustedBoundsSize.asSize
-            )
-        ).map(\.asCGRect)
+        let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
         zip(subviews, frames).forEach { view, frame in
             view.frame = frame
         }
