@@ -3,33 +3,33 @@
 //
 
 import UIKit
+import Rectangular
 
 public class OffsetView: UIView {
 
-    public let view: UIView
+    private var layout: OffsetLayout
 
     public var x: Double {
-        didSet {
-            guard x != oldValue else { return }
-            setNeedsLayout()
+        get { layout.x }
+        set {
+            layout.x = newValue
+            setAncestorsNeedLayout()
         }
     }
 
     public var y: Double {
-        didSet {
-            guard y != oldValue else { return }
-            setNeedsLayout()
+        get { layout.y }
+        set {
+            layout.y = newValue
+            setAncestorsNeedLayout()
         }
     }
 
     // MARK: - Lifecycle
 
-    public init(_ view: UIView, x: Double, y: Double) {
-        self.view = view
-        self.x = x
-        self.y = y
+    public init(x: Double, y: Double) {
+        layout = .init(x: x, y: y)
         super.init(frame: .zero)
-        addSubview(view)
     }
 
     public required init?(coder: NSCoder) {
@@ -39,25 +39,18 @@ public class OffsetView: UIView {
     // MARK: - Layout
 
     public override var intrinsicContentSize: CGSize {
-        .init(
-            width: view.intrinsicContentSize.width,
-            height: view.intrinsicContentSize.height
-        )
+        layout.sizeThatFits(items: subviews).asCGSize
     }
 
     public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
-        view.sizeThatFits(proposedSize)
+        layout.sizeThatFits(items: subviews, within: proposedSize.asSize).asCGSize
     }
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        view.frame = .init(x: x, y: y, width: bounds.size.width, height: bounds.size.height)
-    }
-}
-
-public extension UIView {
-
-    func offset(x: Double = .zero, y: Double = .zero) -> OffsetView {
-        .init(self, x: x, y: y)
+        let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
+        zip(subviews, frames).forEach { view, frame in
+            view.frame = frame
+        }
     }
 }
