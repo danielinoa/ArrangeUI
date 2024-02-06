@@ -3,22 +3,6 @@
 //
 
 import UIKit
-import Rectangular
-
-extension UIView: LayoutItem {
-
-    public var priority: Int {
-        arrangementPriority
-    }
-
-    public var intrinsicSize: Size {
-        intrinsicContentSize.asSize
-    }
-
-    public func sizeThatFits(_ size: Size) -> Size {
-        sizeThatFits(size.asCGSize).asSize
-    }
-}
 
 public extension UIView {
 
@@ -32,5 +16,24 @@ public extension UIView {
             parent = parent?.superview
         }
         return nil
+    }
+}
+
+extension UIView {
+
+    /// This function inserts and removes subviews based on the diff between the specified and existing subviews.
+    @discardableResult
+    func setSubviews(_ subviews: [UIView]) -> Self {
+        let oldSubviews = self.subviews
+        let diff = subviews.difference(from: oldSubviews)
+        diff.forEach { change in
+            switch change {
+            case .insert(let offset, let subview, _):
+                insertSubview(subview, at: offset)
+            case .remove(_, let element, _):
+                element.removeFromSuperview()
+            }
+        }
+        return self
     }
 }
