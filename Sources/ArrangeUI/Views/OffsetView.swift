@@ -4,6 +4,7 @@
 
 import UIKit
 import Rectangular
+import Combine
 
 public class OffsetView: UIView {
 
@@ -25,11 +26,27 @@ public class OffsetView: UIView {
         }
     }
 
+    // MARK: - Observation
+
+    private let subject: CurrentValueSubject<Offset, Never>
+    private var cancellables: Set<AnyCancellable> = []
+
     // MARK: - Lifecycle
 
-    public init(x: Double, y: Double) {
-        layout = .init(x: x, y: y)
+    public convenience init(x: Double, y: Double) {
+        self.init(
+            CurrentValueSubject<Offset, Never>((x, y))
+        )
+    }
+
+    public init(_ subject: CurrentValueSubject<Offset, Never>) {
+        self.subject = subject
+        layout = .init(x: subject.value.x, y: subject.value.y)
         super.init(frame: .zero)
+        subject.sink { [weak self] offset in
+            self?.layout = .init(x: offset.x, y: offset.y)
+            self?.setAncestorsNeedLayout()
+        }.store(in: &cancellables)
     }
 
     public required init?(coder: NSCoder) {
