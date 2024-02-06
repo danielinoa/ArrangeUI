@@ -6,3 +6,4 @@ import CoreGraphics
 
 public typealias ProposedSize = CGSize
 public typealias PreferredSize = CGSize
+public typealias Offset = (x: Double, y: Double)
