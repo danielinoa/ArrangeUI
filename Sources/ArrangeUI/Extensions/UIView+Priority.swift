@@ -6,7 +6,7 @@ import UIKit
 
 public extension UIView {
 
-    private static var arrangementPriorityAssociationKey: Any?
+    private static var arrangementPriorityAssociationKey: UnsafeRawPointer?
 
     var arrangementPriority: Int {
         get {
