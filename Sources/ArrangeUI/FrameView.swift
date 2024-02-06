@@ -7,28 +7,27 @@ import Rectangular
 
 public class FrameView: UIView {
 
-    public let view: UIView
-
     public let width: Double?
-
     public let height: Double?
 
-    public var alignment: Alignment {
+    private var layout = ZStackLayout() {
         didSet {
             setAncestorsNeedLayout()
         }
     }
 
+    public var alignment: Alignment {
+        get { layout.alignment }
+        set { layout.alignment = newValue }
+    }
+
     // MARK: - Lifecycle
 
-    public init(_ view: UIView, width: Double?, height: Double?, alignment: Alignment = .center) {
-        self.view = view
+    public init(width: Double? = nil, height: Double? = nil, alignment: Alignment = .center) {
         self.width = width
         self.height = height
-        self.alignment = alignment
+        layout.alignment = alignment
         super.init(frame: .zero)
-        addSubview(view)
-        clipsToBounds = true
     }
 
     public required init?(coder: NSCoder) {
@@ -38,61 +37,26 @@ public class FrameView: UIView {
     // MARK: - Layout
 
     public override var intrinsicContentSize: CGSize {
-        .init(
-            width: width ?? .zero,
-            height: height ?? .zero
+        lazy var fittingSize = layout.sizeThatFits(items: subviews)
+        return .init(
+            width: width ?? fittingSize.width,
+            height: height ?? fittingSize.height
         )
     }
 
     public override func sizeThatFits(_ proposedSize: CGSize) -> CGSize {
-        .init(
-            width: width ?? proposedSize.width,
-            height: height ?? proposedSize.height
+        lazy var fittingSize = layout.sizeThatFits(items: subviews, within: proposedSize.asSize)
+        return .init(
+            width: width ?? fittingSize.width,
+            height: height ?? fittingSize.height
         )
     }
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        let fittingSize = view.sizeThatFits(bounds.size)
-        view.frame.size = fittingSize
-        switch alignment {
-        case .topLeading:
-            view.frame.leadingX = bounds.leadingX
-            view.frame.topY = bounds.topY
-        case .top:
-            view.frame.centerX = bounds.centerX
-            view.frame.topY = bounds.topY
-        case .topTrailing:
-            view.frame.trailingX = bounds.trailingX
-            view.frame.topY = bounds.topY
-        case .leading:
-            view.frame.leadingX = bounds.leadingX
-            view.frame.centerY = bounds.centerY
-        case .center:
-            view.frame.centerX = bounds.centerX
-            view.frame.centerY = bounds.centerY
-        case .trailing:
-            view.frame.trailingX = bounds.trailingX
-            view.frame.centerY = bounds.centerY
-        case .bottomLeading:
-            view.frame.leadingX = bounds.leadingX
-            view.frame.bottomY = bounds.bottomY
-        case .bottom:
-            view.frame.centerX = bounds.centerX
-            view.frame.bottomY = bounds.bottomY
-        case .bottomTrailing:
-            view.frame.trailingX = bounds.trailingX
-            view.frame.bottomY = bounds.bottomY
-        default:
-            view.frame.centerX = bounds.centerX
-            view.frame.centerY = bounds.centerY
+        let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
+        zip(subviews, frames).forEach { view, frame in
+            view.frame = frame
         }
-    }
-}
-
-extension UIView {
-
-    public func frame(width: Double? = nil, height: Double? = nil, alignment: Alignment = .center) -> FrameView {
-        .init(self, width: width, height: height, alignment: alignment)
     }
 }
