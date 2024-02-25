@@ -5,7 +5,7 @@
 import UIKit
 import Rectangular
 
-/// A view that arranges its subviews along the horizontal axis.
+/// A view that arranges its subviews along the vertical axis.
 public class VStackView: UIView {
 
     public var alignment: HorizontalAlignment {
