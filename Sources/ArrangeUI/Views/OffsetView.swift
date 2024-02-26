@@ -8,16 +8,6 @@ import Combine
 
 public class OffsetView: LayoutView {
 
-    public override var layout: Layout {
-        get { offsetLayout }
-        set {
-            guard let offsetLayout = newValue as? OffsetLayout else { return }
-            self.offsetLayout = offsetLayout
-        }
-    }
-
-    private var offsetLayout: OffsetLayout
-
     public var x: Double {
         get { offsetLayout.x }
         set {
@@ -33,6 +23,16 @@ public class OffsetView: LayoutView {
             setAncestorsNeedLayout()
         }
     }
+
+    public override var layout: Layout {
+        get { offsetLayout }
+        set {
+            guard let offsetLayout = newValue as? OffsetLayout else { return }
+            self.offsetLayout = offsetLayout
+        }
+    }
+
+    private var offsetLayout: OffsetLayout
 
     // MARK: - Observation
 
