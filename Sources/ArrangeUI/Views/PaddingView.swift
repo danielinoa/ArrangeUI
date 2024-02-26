@@ -13,13 +13,15 @@ public class PaddingView: LayoutView {
         set { subject.value = newValue }
     }
 
-    private var paddingLayout: PaddingLayout? {
-        get { layout as? PaddingLayout }
+    public override var layout: Layout {
+        get { paddingLayout }
         set {
-            guard let newLayout = newValue else { return }
-            layout = newLayout
+            guard let paddingLayout = newValue as? PaddingLayout else { return }
+            self.paddingLayout = paddingLayout
         }
     }
+
+    private var paddingLayout: PaddingLayout
 
     // MARK: - Observation
 
@@ -40,11 +42,11 @@ public class PaddingView: LayoutView {
 
     public init(_ subject: CurrentValueSubject<UIEdgeInsets, Never>) {
         self.subject = subject
-        let layout = PaddingLayout(insets: subject.value.asEdgeInsets)
-        super.init(layout: layout)
+        paddingLayout = PaddingLayout(insets: subject.value.asEdgeInsets)
+        super.init(layout: paddingLayout)
         subject.sink { [weak self] insets in
             guard let self else { return }
-            self.paddingLayout?.insets = insets.asEdgeInsets
+            self.paddingLayout.insets = insets.asEdgeInsets
             self.setAncestorsNeedLayout()
         }.store(in: &cancellables)
     }
