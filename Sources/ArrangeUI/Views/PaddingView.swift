@@ -6,14 +6,20 @@ import UIKit
 import Combine
 import Rectangular
 
-public class PaddingView: UIView {
+public class PaddingView: LayoutView {
 
     public var insets: UIEdgeInsets {
         get { subject.value }
         set { subject.value = newValue }
     }
 
-    private var layout: PaddingLayout
+    private var paddingLayout: PaddingLayout? {
+        get { layout as? PaddingLayout }
+        set {
+            guard let newLayout = newValue else { return }
+            layout = newLayout
+        }
+    }
 
     // MARK: - Observation
 
@@ -34,34 +40,17 @@ public class PaddingView: UIView {
 
     public init(_ subject: CurrentValueSubject<UIEdgeInsets, Never>) {
         self.subject = subject
-        layout = .init(insets: subject.value.asEdgeInsets)
-        super.init(frame: .zero)
+        let layout = PaddingLayout(insets: subject.value.asEdgeInsets)
+        super.init(layout: layout)
         subject.sink { [weak self] insets in
-            self?.layout.insets = insets.asEdgeInsets
-            self?.setAncestorsNeedLayout()
+            guard let self else { return }
+            self.paddingLayout?.insets = insets.asEdgeInsets
+            self.setAncestorsNeedLayout()
         }.store(in: &cancellables)
     }
 
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Layout
-
-    public override var intrinsicContentSize: CGSize {
-        layout.sizeThatFits(items: subviews).asCGSize
-    }
-
-    public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
-        layout.sizeThatFits(items: subviews, within: proposedSize.asSize).asCGSize
-    }
-
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
-        zip(subviews, frames).forEach { view, frame in
-            view.frame = frame
-        }
     }
 }
 
