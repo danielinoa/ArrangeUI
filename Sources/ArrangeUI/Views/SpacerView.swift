@@ -27,10 +27,6 @@ public class SpacerView: UIView {
     }
 
     public override func sizeThatFits(_ size: ProposedSize) -> PreferredSize {
-        if let sizeThatFitsOverride {
-            return sizeThatFitsOverride(size)
-        } else {
-            return .init(width: size.width, height: size.height)
-        }
+        sizeThatFitsOverride?(size) ?? size
     }
 }
