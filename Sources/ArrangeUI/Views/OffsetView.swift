@@ -6,22 +6,30 @@ import UIKit
 import Rectangular
 import Combine
 
-public class OffsetView: UIView {
+public class OffsetView: LayoutView {
 
-    private var layout: OffsetLayout
+    public override var layout: Layout {
+        get { offsetLayout }
+        set {
+            guard let offsetLayout = newValue as? OffsetLayout else { return }
+            self.offsetLayout = offsetLayout
+        }
+    }
+
+    private var offsetLayout: OffsetLayout
 
     public var x: Double {
-        get { layout.x }
+        get { offsetLayout.x }
         set {
-            layout.x = newValue
+            offsetLayout.x = newValue
             setAncestorsNeedLayout()
         }
     }
 
     public var y: Double {
-        get { layout.y }
+        get { offsetLayout.y }
         set {
-            layout.y = newValue
+            offsetLayout.y = newValue
             setAncestorsNeedLayout()
         }
     }
@@ -41,33 +49,15 @@ public class OffsetView: UIView {
 
     public init(_ subject: CurrentValueSubject<Offset, Never>) {
         self.subject = subject
-        layout = .init(x: subject.value.x, y: subject.value.y)
-        super.init(frame: .zero)
+        offsetLayout = OffsetLayout(x: subject.value.x, y: subject.value.y)
+        super.init(layout: offsetLayout)
         subject.sink { [weak self] offset in
-            self?.layout = .init(x: offset.x, y: offset.y)
+            self?.offsetLayout = .init(x: offset.x, y: offset.y)
             self?.setAncestorsNeedLayout()
         }.store(in: &cancellables)
     }
 
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Layout
-
-    public override var intrinsicContentSize: CGSize {
-        layout.sizeThatFits(items: subviews).asCGSize
-    }
-
-    public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
-        layout.sizeThatFits(items: subviews, within: proposedSize.asSize).asCGSize
-    }
-
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
-        zip(subviews, frames).forEach { view, frame in
-            view.frame = frame
-        }
     }
 }
