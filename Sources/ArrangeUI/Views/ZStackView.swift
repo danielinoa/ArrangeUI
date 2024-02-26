@@ -5,9 +5,9 @@
 import UIKit
 
 @dynamicMemberLookup
-final class ZStackView: LayoutView {
+public final class ZStackView: LayoutView {
 
-    override var layout: Layout {
+    public override var layout: Layout {
         get { stackLayout }
         set {
             guard let stackLayout = newValue as? ZStackLayout else { return }
@@ -17,7 +17,7 @@ final class ZStackView: LayoutView {
 
     private var stackLayout: ZStackLayout
 
-    init(alignment: Alignment = .center, spacing: Double = .zero) {
+    public init(alignment: Alignment = .center, spacing: Double = .zero) {
         stackLayout = ZStackLayout(alignment: alignment)
         super.init(layout: stackLayout)
     }
@@ -26,7 +26,7 @@ final class ZStackView: LayoutView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    subscript<T>(dynamicMember keyPath: WritableKeyPath<ZStackLayout, T>) -> T {
+    public subscript<T>(dynamicMember keyPath: WritableKeyPath<ZStackLayout, T>) -> T {
         get { stackLayout[keyPath: keyPath] }
         set { stackLayout[keyPath: keyPath] = newValue }
     }
