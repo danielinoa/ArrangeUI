@@ -6,6 +6,8 @@ import UIKit
 
 public class SpacerView: UIView {
 
+    var sizeThatFitsOverride: ((ProposedSize) -> PreferredSize)?
+
     // MARK: - Lifecycle
 
     public init() {
@@ -25,12 +27,10 @@ public class SpacerView: UIView {
     }
 
     public override func sizeThatFits(_ size: ProposedSize) -> PreferredSize {
-        let ancestor = nearestAncestorOfType(anyOf: HStackView.self, VStackView.self, ZStackView.self)
-        switch ancestor {
-        case _ as HStackView: return .init(width: size.width, height: .zero)
-        case _ as VStackView: return .init(width: .zero, height: size.height)
-        case _ as ZStackView: return .init(width: size.width, height: size.height)
-        default: return size
+        if let sizeThatFitsOverride {
+            return sizeThatFitsOverride(size)
+        } else {
+            return .init(width: size.width, height: size.height)
         }
-    }    
+    }
 }

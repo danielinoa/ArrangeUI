@@ -4,21 +4,6 @@
 
 import UIKit
 
-public extension UIView {
-
-    func nearestAncestorOfType(anyOf types: UIView.Type...) -> UIView? {
-        var parent: UIView? = superview
-        while parent.isNotNil {
-            let parentType = type(of: parent!)
-            if types.contains(where: { $0 == parentType }) {
-                return parent
-            }
-            parent = parent?.superview
-        }
-        return nil
-    }
-}
-
 extension UIView {
 
     /// This function inserts and removes subviews based on the diff between the specified and existing subviews.
