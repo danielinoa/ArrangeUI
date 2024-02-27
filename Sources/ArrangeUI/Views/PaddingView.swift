@@ -6,6 +6,7 @@ import UIKit
 import Combine
 import Rectangular
 
+@dynamicMemberLookup
 public class PaddingView: LayoutView {
 
     public var insets: UIEdgeInsets {
@@ -21,7 +22,11 @@ public class PaddingView: LayoutView {
         }
     }
 
-    private var paddingLayout: PaddingLayout
+    private var paddingLayout: PaddingLayout {
+        didSet {
+            setAncestorsNeedLayout()
+        }
+    }
 
     // MARK: - Observation
 
@@ -45,14 +50,17 @@ public class PaddingView: LayoutView {
         paddingLayout = PaddingLayout(insets: subject.value.asEdgeInsets)
         super.init(layout: paddingLayout)
         subject.sink { [weak self] insets in
-            guard let self else { return }
-            self.paddingLayout.insets = insets.asEdgeInsets
-            self.setAncestorsNeedLayout()
+            self?.paddingLayout.insets = insets.asEdgeInsets
         }.store(in: &cancellables)
     }
 
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    public subscript<T>(dynamicMember keyPath: WritableKeyPath<PaddingLayout, T>) -> T {
+        get { paddingLayout[keyPath: keyPath] }
+        set { paddingLayout[keyPath: keyPath] = newValue }
     }
 }
 

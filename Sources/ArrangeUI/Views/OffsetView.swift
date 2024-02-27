@@ -6,23 +6,8 @@ import UIKit
 import Rectangular
 import Combine
 
+@dynamicMemberLookup
 public class OffsetView: LayoutView {
-
-    public var x: Double {
-        get { offsetLayout.x }
-        set {
-            offsetLayout.x = newValue
-            setAncestorsNeedLayout()
-        }
-    }
-
-    public var y: Double {
-        get { offsetLayout.y }
-        set {
-            offsetLayout.y = newValue
-            setAncestorsNeedLayout()
-        }
-    }
 
     public override var layout: Layout {
         get { offsetLayout }
@@ -32,7 +17,11 @@ public class OffsetView: LayoutView {
         }
     }
 
-    private var offsetLayout: OffsetLayout
+    private var offsetLayout: OffsetLayout {
+        didSet {
+            setAncestorsNeedLayout()
+        }
+    }
 
     // MARK: - Observation
 
@@ -53,11 +42,15 @@ public class OffsetView: LayoutView {
         super.init(layout: offsetLayout)
         subject.sink { [weak self] offset in
             self?.offsetLayout = .init(x: offset.x, y: offset.y)
-            self?.setAncestorsNeedLayout()
         }.store(in: &cancellables)
     }
 
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    public subscript<T>(dynamicMember keyPath: WritableKeyPath<OffsetLayout, T>) -> T {
+        get { offsetLayout[keyPath: keyPath] }
+        set { offsetLayout[keyPath: keyPath] = newValue }
     }
 }
