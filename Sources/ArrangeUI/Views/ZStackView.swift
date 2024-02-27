@@ -17,7 +17,7 @@ public final class ZStackView: LayoutView {
 
     private var stackLayout: ZStackLayout
 
-    public init(alignment: Alignment = .center, spacing: Double = .zero) {
+    public init(alignment: Alignment = .center) {
         stackLayout = ZStackLayout(alignment: alignment)
         super.init(layout: stackLayout)
     }
