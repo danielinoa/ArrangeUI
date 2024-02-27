@@ -29,7 +29,7 @@ public class LayoutView: UIView {
     // MARK: - Layout
 
     public override var intrinsicContentSize: CGSize {
-        layout.sizeThatFits(items: subviews).asCGSize
+        layout.minimumSize(for: subviews).asCGSize
     }
 
     public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
