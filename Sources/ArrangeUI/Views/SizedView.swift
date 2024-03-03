@@ -4,7 +4,7 @@
 
 import UIKit
 
-/// A SizedView sizes the wrapped-view to the specified size without considering any size proposal.
+/// A SizedView forces the underlying view to the specified size without considering any size proposal.
 /// Unspecified dimensions will adopt the proposal or the underlying view's intrinsic size dimension.
 /// This is different to FrameView, where the wrapped-view is proposed a size and it determines the size that fits best.
 public class SizedView: UIView {
