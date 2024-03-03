@@ -46,12 +46,11 @@ public final class ArrangedContainer: UIView, LayoutObserver {
     public override func layoutSubviews() {
         super.layoutSubviews()
         guard let rootView else { return }
-        let safeBounds = bounds.inset(by: safeAreaInsets)
-        let preferredSize = rootView.sizeThatFits(safeBounds.size)
-        rootView.frame.size.width = preferredSize.width.clamped(within: ...safeBounds.width)
-        rootView.frame.size.height = preferredSize.height.clamped(within: ...safeBounds.height)
-        rootView.frame.centerX = safeBounds.centerX
-        rootView.frame.centerY = safeBounds.centerY
+        let preferredSize = rootView.sizeThatFits(bounds.size)
+        rootView.frame.size.width = preferredSize.width.clamped(within: ...bounds.width)
+        rootView.frame.size.height = preferredSize.height.clamped(within: ...bounds.height)
+        rootView.frame.centerX = bounds.centerX
+        rootView.frame.centerY = bounds.centerY
     }
 
     // MARK: - Tree Assembly
