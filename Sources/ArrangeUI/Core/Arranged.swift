@@ -7,13 +7,19 @@ import UIKit
 public protocol Arranged {
 
     var arrangedContent: (any Arranged)? { get }
-
-    func arrange(_ arranged: Arranged...) -> Arranged
 }
 
 public extension Arranged {
 
     func arrange(_ items: Arranged...) -> Arranged {
+        arrange(items: items)
+    }
+
+    func arrange(@ArrangedResultBuilder _ content: () -> [Arranged]) -> Arranged {
+        arrange(items: content())
+    }
+
+    func arrange(items: [Arranged]) -> Arranged {
         let subnodes: [BuilderNode] = items.map { item in
             if let node = item as? BuilderNode {
                 node

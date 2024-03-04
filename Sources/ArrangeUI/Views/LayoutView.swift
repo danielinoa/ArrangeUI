@@ -5,7 +5,7 @@
 import UIKit
 import Rectangular
 
-public class LayoutView: UIView {
+open class LayoutView: UIView {
 
     public var layout: any Layout {
         didSet {
@@ -13,6 +13,8 @@ public class LayoutView: UIView {
             setAncestorsNeedLayout()
         }
     }
+
+    public var layoutSubviewsStrategy: ((Zip2Sequence<[UIView], [CGRect]>) -> Void)?
 
     // MARK: - Lifecycle
 
@@ -39,8 +41,13 @@ public class LayoutView: UIView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
-        zip(subviews, frames).forEach { view, frame in
-            view.frame = frame
+        let pairs = zip(subviews, frames)
+        if let layoutSubviewsStrategy {
+            layoutSubviewsStrategy(pairs)
+        } else {
+            pairs.forEach { view, frame in
+                view.frame = frame
+            }
         }
     }
 
