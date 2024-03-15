@@ -7,14 +7,14 @@ import Rectangular
 
 open class LayoutView: UIView {
 
-    public var layout: any Layout {
+    open var layout: any Layout {
         didSet {
             applyOverrides()
             setAncestorsNeedLayout()
         }
     }
 
-    public var layoutSubviewsStrategy: ((Zip2Sequence<[UIView], [CGRect]>) -> Void)?
+    open var layoutSubviewsStrategy: ((Zip2Sequence<[UIView], [CGRect]>) -> Void)?
 
     // MARK: - Lifecycle
 
@@ -30,15 +30,15 @@ open class LayoutView: UIView {
 
     // MARK: - Layout
 
-    public override var intrinsicContentSize: CGSize {
+    open override var intrinsicContentSize: CGSize {
         layout.minimumSize(for: subviews).asCGSize
     }
 
-    public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
+    open override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
        layout.sizeThatFits(items: subviews, within: proposedSize.asSize).asCGSize
     }
 
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
         let pairs = zip(subviews, frames)
