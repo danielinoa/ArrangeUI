@@ -39,9 +39,11 @@ public class SizedView: UIView {
     }
 
     public override func sizeThatFits(_ proposal: CGSize) -> CGSize {
-        .init(
-            width: width ?? proposal.width,
-            height: height ?? proposal.height
+        // TODO: Review strategy
+        lazy var fittingSize = view.sizeThatFits(proposal)
+        return .init(
+            width: width ?? fittingSize.width,
+            height: height ?? fittingSize.height
         )
     }
 
