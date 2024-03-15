@@ -21,6 +21,7 @@ public extension UIView {
     }
 
     func setAncestorsNeedLayout() {
+        invalidateIntrinsicContentSize() // For instances where views are contained within AutoLayout.
         setNeedsLayout()
         superview?.setAncestorsNeedLayout()
     }
