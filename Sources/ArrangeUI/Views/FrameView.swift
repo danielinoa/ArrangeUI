@@ -45,10 +45,9 @@ public class FrameView: UIView {
     }
 
     public override func sizeThatFits(_ proposedSize: CGSize) -> CGSize {
-        lazy var fittingSize = layout.sizeThatFits(items: subviews, within: proposedSize.asSize)
         return .init(
-            width: width ?? fittingSize.width,
-            height: height ?? fittingSize.height
+            width: width ?? proposedSize.width,
+            height: height ?? proposedSize.height
         )
     }
 
@@ -56,7 +55,22 @@ public class FrameView: UIView {
         super.layoutSubviews()
         let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
         zip(subviews, frames).forEach { view, frame in
-            view.frame = frame
+            view.frame = .init(
+                origin: frame.origin, 
+                size: .init(
+                    width: width ?? bounds.width,
+                    height: height ?? bounds.height
+                )
+            )
         }
+    }
+}
+
+public extension UIView {
+
+    func frame(width: Double? = nil, height: Double? = nil, alignment: Alignment = .center) -> UIView {
+        let frameView = FrameView(width: width, height: height, alignment: alignment)
+        frameView.addSubview(self)
+        return frameView
     }
 }
