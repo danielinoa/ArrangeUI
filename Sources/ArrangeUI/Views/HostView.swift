@@ -4,7 +4,7 @@
 
 import UIKit
 
-public final class ArrangedContainer: UIView, LayoutObserver {
+public final class HostView: UIView, LayoutObserver {
 
     private let rootNode: BuilderNode
     private(set) var rootView: UIView?
@@ -46,11 +46,7 @@ public final class ArrangedContainer: UIView, LayoutObserver {
     public override func layoutSubviews() {
         super.layoutSubviews()
         guard let rootView else { return }
-        let preferredSize = rootView.sizeThatFits(bounds.size)
-        rootView.frame.size.width = preferredSize.width.clamped(within: ...bounds.width)
-        rootView.frame.size.height = preferredSize.height.clamped(within: ...bounds.height)
-        rootView.frame.centerX = bounds.centerX
-        rootView.frame.centerY = bounds.centerY
+        rootView.frame = bounds
     }
 
     // MARK: - Tree Assembly
@@ -70,5 +66,12 @@ public final class ArrangedContainer: UIView, LayoutObserver {
             observable.observer = self
         }
         node.subnodes.forEach { referenceObservables(startingWith: $0) }
+    }
+}
+
+public extension Arranged {
+
+    func hosted() -> HostView {
+        .init(self)
     }
 }
