@@ -31,7 +31,7 @@ open class LayoutView: UIView {
     // MARK: - Layout
 
     open override var intrinsicContentSize: CGSize {
-        layout.minimumSize(for: subviews).asCGSize
+        layout.naturalSize(for: subviews).asCGSize
     }
 
     open override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {

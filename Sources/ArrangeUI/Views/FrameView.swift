@@ -37,7 +37,7 @@ public class FrameView: UIView {
     // MARK: - Layout
 
     public override var intrinsicContentSize: CGSize {
-        lazy var fittingSize = layout.minimumSize(for: subviews)
+        lazy var fittingSize = layout.naturalSize(for: subviews)
         return .init(
             width: width ?? fittingSize.width,
             height: height ?? fittingSize.height
