@@ -35,7 +35,7 @@ open class LayoutView: UIView {
     }
 
     open override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
-       layout.sizeThatFits(items: subviews, within: proposedSize.asSize).asCGSize
+        layout.size(fitting: subviews, within: proposedSize.asSize).asCGSize
     }
 
     open override func layoutSubviews() {

@@ -7,10 +7,7 @@ import Rectangular
 
 public class FrameView: UIView {
 
-    public let width: Double?
-    public let height: Double?
-
-    private var layout = ZStackLayout() {
+    private var layout: FrameLayout {
         didSet {
             setAncestorsNeedLayout()
         }
@@ -23,10 +20,25 @@ public class FrameView: UIView {
 
     // MARK: - Lifecycle
 
+    public init(
+        minimumWidth: Double? = nil,
+        maximumWidth: Double? = nil,
+        minimumHeight: Double? = nil,
+        maximumHeight: Double? = nil,
+        alignment: Alignment = .center
+    ) {
+        self.layout = .init(
+            minimumWidth: minimumWidth, 
+            maximumWidth: maximumWidth,
+            minimumHeight: minimumHeight,
+            maximumHeight: maximumHeight,
+            alignment: alignment
+        )
+        super.init(frame: .zero)
+    }
+
     public init(width: Double? = nil, height: Double? = nil, alignment: Alignment = .center) {
-        self.width = width
-        self.height = height
-        layout.alignment = alignment
+        self.layout = .init(width: width, height: height, alignment: alignment)
         super.init(frame: .zero)
     }
 
@@ -37,38 +49,43 @@ public class FrameView: UIView {
     // MARK: - Layout
 
     public override var intrinsicContentSize: CGSize {
-        lazy var fittingSize = layout.naturalSize(for: subviews)
-        return .init(
-            width: width ?? fittingSize.width,
-            height: height ?? fittingSize.height
-        )
+        layout.naturalSize(for: subviews).asCGSize
     }
 
     public override func sizeThatFits(_ proposedSize: CGSize) -> CGSize {
-        return .init(
-            width: width ?? proposedSize.width,
-            height: height ?? proposedSize.height
-        )
+        layout.size(fitting: subviews, within: proposedSize.asSize).asCGSize
     }
 
     public override func layoutSubviews() {
         super.layoutSubviews()
         let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
         zip(subviews, frames).forEach { view, frame in
-            view.frame = .init(
-                origin: frame.origin, 
-                size: .init(
-                    width: width ?? bounds.width,
-                    height: height ?? bounds.height
-                )
-            )
+            view.frame = frame
         }
     }
 }
 
 public extension UIView {
 
-    func frame(width: Double? = nil, height: Double? = nil, alignment: Alignment = .center) -> UIView {
+    func frame(
+        minimumWidth: Double? = nil,
+        maximumWidth: Double? = nil,
+        minimumHeight: Double? = nil,
+        maximumHeight: Double? = nil,
+        alignment: Alignment = .center
+    ) -> FrameView {
+        let frameView = FrameView(
+            minimumWidth: minimumWidth,
+            maximumWidth: maximumWidth,
+            minimumHeight: minimumHeight,
+            maximumHeight: maximumHeight,
+            alignment: alignment
+        )
+        frameView.addSubview(self)
+        return frameView
+    }
+
+    func frame(width: Double? = nil, height: Double? = nil, alignment: Alignment = .center) -> FrameView {
         let frameView = FrameView(width: width, height: height, alignment: alignment)
         frameView.addSubview(self)
         return frameView
