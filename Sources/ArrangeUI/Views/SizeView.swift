@@ -4,10 +4,10 @@
 
 import UIKit
 
-/// A SizedView forces the underlying view to the specified size without considering any size proposal.
+/// A SizeView forces the underlying view to the specified size without considering any size proposal.
 /// Unspecified dimensions will adopt the proposal or the underlying view's intrinsic size dimension.
 /// This is different to FrameView, where the wrapped-view is proposed a size and it determines the size that fits best.
-public class SizedView: UIView {
+public class SizeView: UIView {
 
     public let view: UIView
 
@@ -60,11 +60,11 @@ public class SizedView: UIView {
 
 public extension UIView {
 
-    func sized(width: Double? = nil, height: Double? = nil) -> SizedView {
+    func sized(width: Double? = nil, height: Double? = nil) -> SizeView {
         .init(self, width: width, height: height)
     }
 
-    func sized(to size: CGSize) -> SizedView {
+    func sized(to size: CGSize) -> SizeView {
         .init(self, width: size.width, height: size.height)
     }
 }

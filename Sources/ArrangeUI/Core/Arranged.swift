@@ -5,7 +5,6 @@
 import UIKit
 
 public protocol Arranged {
-
     var arrangedContent: (any Arranged)? { get }
 }
 
@@ -20,44 +19,37 @@ public extension Arranged {
     }
 
     func arrange(items: [Arranged]) -> Arranged {
-        let subnodes: [BuilderNode] = items.map { item in
-            if let node = item as? BuilderNode {
-                node
-            } else {
-                BuilderNode(content: item)
-            }
-        }
-        if let node = self as? BuilderNode {
-            node.subnodes = subnodes
-            return node
-        } else {
-            return BuilderNode(content: self, subnodes: subnodes)
-        }
+        let node = self as? BuilderNode ?? BuilderNode(content: self)
+        node.subnodes = items.map { $0 as? BuilderNode ?? .init(content: $0) }
+        return node
     }
 }
 
 public extension Arranged {
 
+    // NOTES
+    // -----
+    // In situations where a view has subviews that are not part of the Arranged-tree, that view's sub-hierarchy
+    // should not be modified.
+    // For example, an arranged UIButton's titleLabel and imageView are part of the button's view hierarchy but
+    // not explictly included as part of the Arranged tree. In that case those subviews are ignored from any
+    // view-hierarchy related operations.
+    // `node.subnodes.hasElements` is checked to ensure the aforementioned rule.
+
     func constructViewTree() -> UIView? {
-        if let view = self as? UIView {
-            return view
-        } else if let content: Arranged = self.arrangedContent, let view: UIView = content.constructViewTree() {
-            // In situations where a view has subviews that are not part of the Arranged-tree, that view's sub-hierarchy
-            // should not be modified. 
-            // For example, an arranged UIButton's titleLabel and imageView are part of the button's view hierarchy but
-            // not explictly included as part of the Arranged tree. In that case those subviews are ignored from any
-            // view-hierarchy related operations.
-            // `node.subnodes.hasElements` is checked to ensure the aforementioned rule.
-            if let node = self as? BuilderNode, node.subnodes.hasElements {
-                let subviews: [UIView] = node.subnodes.compactMap { $0.constructViewTree() }
+        switch self {
+        case let view as UIView: return view
+        case let arranged as Arranged:
+            guard let view = arranged.arrangedContent?.constructViewTree() else { return nil }
+            if let node = arranged as? BuilderNode, node.subnodes.hasElements {
+                let subviews = node.subnodes.compactMap { $0.constructViewTree() }
                 view.setSubviews(subviews)
             }
-            if let viewModifier = self as? UIViewModifier {
-                viewModifier.modify(view)
+            if let hook = arranged as? Hook {
+                hook.process(view)
             }
             return view
-        } else {
-            return nil
+        default: return nil
         }
     }
 }

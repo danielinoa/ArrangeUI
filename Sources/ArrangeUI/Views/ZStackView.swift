@@ -4,7 +4,6 @@
 
 import UIKit
 
-@dynamicMemberLookup
 public final class ZStackView: LayoutView {
 
     public override var layout: Layout {
@@ -15,7 +14,7 @@ public final class ZStackView: LayoutView {
         }
     }
 
-    private var stackLayout: ZStackLayout
+    public var stackLayout: ZStackLayout
 
     public init(alignment: Alignment = .center) {
         stackLayout = ZStackLayout(alignment: alignment)
@@ -24,10 +23,5 @@ public final class ZStackView: LayoutView {
 
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    public subscript<T>(dynamicMember keyPath: WritableKeyPath<ZStackLayout, T>) -> T {
-        get { stackLayout[keyPath: keyPath] }
-        set { stackLayout[keyPath: keyPath] = newValue }
     }
 }

@@ -12,13 +12,7 @@ extension UIView: Arranged {
     }
 
     public func arrange(_ items: Arranged...) -> Arranged {
-        let subnodes: [BuilderNode] = items.map {
-            if let node = $0 as? BuilderNode {
-                node
-            } else {
-                BuilderNode(content: $0)
-            }
-        }
+        let subnodes: [BuilderNode] = items.map { $0 as? BuilderNode ?? .init(content: $0) }
         return BuilderNode(content: self, subnodes: subnodes)
     }
 }

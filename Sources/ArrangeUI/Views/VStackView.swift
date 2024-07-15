@@ -4,7 +4,6 @@
 
 import UIKit
 
-@dynamicMemberLookup
 public final class VStackView: LayoutView {
 
     public override var layout: Layout {
@@ -15,7 +14,7 @@ public final class VStackView: LayoutView {
         }
     }
 
-    private var stackLayout: VStackLayout
+    public var stackLayout: VStackLayout
 
     public init(alignment: HorizontalAlignment = .center, spacing: Double = .zero) {
         stackLayout = VStackLayout(alignment: alignment, spacing: spacing)
@@ -24,10 +23,5 @@ public final class VStackView: LayoutView {
 
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    public subscript<T>(dynamicMember keyPath: WritableKeyPath<VStackLayout, T>) -> T {
-        get { stackLayout[keyPath: keyPath] }
-        set { stackLayout[keyPath: keyPath] = newValue }
     }
 }
