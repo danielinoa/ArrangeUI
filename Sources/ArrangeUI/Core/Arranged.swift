@@ -46,7 +46,7 @@ public extension Arranged {
                 view.setSubviews(subviews)
             }
             if let hook = arranged as? Hook {
-                hook.process(view)
+                hook.viewWillBeAddedToArrangedTree(view)
             }
             return view
         default: return nil

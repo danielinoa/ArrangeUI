@@ -16,7 +16,7 @@ public struct BorderHook: Hook {
         self.arrangedContent = arrangedContent
     }
 
-    public func process(_ view: UIView) {
+    public func viewWillBeAddedToArrangedTree(_ view: UIView) {
         view.layer.borderWidth = width
         view.layer.borderColor = color.cgColor
     }

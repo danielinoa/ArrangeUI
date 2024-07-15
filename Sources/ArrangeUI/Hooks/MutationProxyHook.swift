@@ -14,15 +14,14 @@ public final class MutationProxyHook<T>: Hook {
         self.arrangedContent = viewProvider
     }
 
-    public func process(_ view: UIView) {
-//        guard type(of: view) == proxy.objectType else { return }
+    public func viewWillBeAddedToArrangedTree(_ view: UIView) {
         proxy.setObject(view)
     }
 }
 
 public extension Arranged {
 
-    public func mutated<T>(by proxy: MutationProxy<T>) -> any Arranged {
+    func mutated<T>(by proxy: MutationProxy<T>) -> any Arranged {
         return MutationProxyHook(proxy: proxy, viewProvider: self)
     }
 }

@@ -18,23 +18,3 @@ public extension Arranged {
         )
     }
 }
-
-private final class OffsetMutation: Hook {
-
-    var arrangedContent: (any Arranged)?
-    let subject: CurrentValueSubject<(x: Double, y: Double), Never>
-    var cancellables: Set<AnyCancellable> = []
-
-    init(arrangedContent: (any Arranged), subject: CurrentValueSubject<(x: Double, y: Double), Never>) {
-        self.arrangedContent = arrangedContent
-        self.subject = subject
-    }
-
-    func process(_ view: UIView) {
-        guard let offsetView = view as? OffsetView, cancellables.isEmpty else { return }
-        subject.sink { [weak offsetView] offset in
-            offsetView?.offsetLayout.x = offset.x
-            offsetView?.offsetLayout.y = offset.y
-        }.store(in: &cancellables)
-    }
-}
