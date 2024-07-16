@@ -7,12 +7,10 @@ import Combine
 
 final class OffsetMutation: Hook {
 
-    var arrangedContent: (any Arranged)?
     let subject: CurrentValueSubject<Offset, Never>
     var cancellables: Set<AnyCancellable> = []
 
-    init(arrangedContent: (any Arranged), subject: CurrentValueSubject<Offset, Never>) {
-        self.arrangedContent = arrangedContent
+    init(subject: CurrentValueSubject<Offset, Never>) {
         self.subject = subject
     }
 

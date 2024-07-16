@@ -7,11 +7,9 @@ import UIKit
 public final class MutationProxyHook<T>: Hook {
 
     public let proxy: MutationProxy<T>
-    public let arrangedContent: (any Arranged)?
 
-    public init(proxy: MutationProxy<T>, viewProvider: (any Arranged)) {
+    public init(proxy: MutationProxy<T>) {
         self.proxy = proxy
-        self.arrangedContent = viewProvider
     }
 
     public func viewWillBeAddedToArrangedTree(_ view: UIView) {
@@ -22,7 +20,7 @@ public final class MutationProxyHook<T>: Hook {
 public extension Arranged {
 
     func mutated<T>(by proxy: MutationProxy<T>) -> any Arranged {
-        return MutationProxyHook(proxy: proxy, viewProvider: self)
+        return MutationProxyHook(proxy: proxy).hosted(content: self)
     }
 }
 

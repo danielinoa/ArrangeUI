@@ -7,12 +7,10 @@ import Combine
 
 final class PaddingMutation: Hook {
 
-    var arrangedContent: (any Arranged)?
     let subject: CurrentValueSubject<UIEdgeInsets, Never>
     var cancellables: Set<AnyCancellable> = []
 
-    init(arrangedContent: (any Arranged)? = nil, subject: CurrentValueSubject<UIEdgeInsets, Never>) {
-        self.arrangedContent = arrangedContent
+    init(subject: CurrentValueSubject<UIEdgeInsets, Never>) {
         self.subject = subject
     }
 

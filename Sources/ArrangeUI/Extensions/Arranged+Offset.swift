@@ -12,9 +12,9 @@ public extension Arranged {
     }
 
     func offset(_ subject: CurrentValueSubject<(x: Double, y: Double), Never>) -> Arranged {
-        OffsetMutation(
-            arrangedContent: PaddingView(.zero).arrange(self),
-            subject: subject
-        )
+        OffsetMutation(subject: subject)
+            .hosted(
+                content: PaddingView(.zero).arrange(self)
+            )
     }
 }

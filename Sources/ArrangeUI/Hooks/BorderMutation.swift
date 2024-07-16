@@ -4,16 +4,14 @@
 
 import UIKit
 
-public struct BorderHook: Hook {
+public struct BorderMutation: Hook {
 
     public var color: UIColor = .clear
     public var width: Double = .zero
-    public internal(set) var arrangedContent: Arranged?
 
-    public init(color: UIColor, width: Double, arrangedContent: Arranged) {
+    public init(color: UIColor, width: Double) {
         self.color = color
         self.width = width
-        self.arrangedContent = arrangedContent
     }
 
     public func viewWillBeAddedToArrangedTree(_ view: UIView) {
@@ -25,6 +23,6 @@ public struct BorderHook: Hook {
 public extension Arranged {
 
     func border(color: UIColor, width: Double) -> Arranged {
-        BorderHook(color: color, width: width, arrangedContent: self)
+        BorderMutation(color: color, width: width).hosted(content: self)
     }
 }

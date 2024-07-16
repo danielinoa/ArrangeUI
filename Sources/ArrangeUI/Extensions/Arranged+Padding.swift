@@ -17,8 +17,7 @@ public extension Arranged {
 
     func padding(_ subject: CurrentValueSubject<UIEdgeInsets, Never>) -> Arranged {
         PaddingMutation(
-            arrangedContent: PaddingView(.zero).arrange(self),
             subject: subject
-        )
+        ).hosted(content: PaddingView(.zero).arrange(self))
     }
 }

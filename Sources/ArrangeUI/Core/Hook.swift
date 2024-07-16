@@ -4,6 +4,6 @@
 
 import UIKit
 
-public protocol Hook: Arranged {
+public protocol Hook {
     func viewWillBeAddedToArrangedTree(_ view: UIView)
 }
