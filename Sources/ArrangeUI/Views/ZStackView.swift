@@ -14,7 +14,11 @@ public final class ZStackView: LayoutView {
         }
     }
 
-    public var stackLayout: ZStackLayout
+    public var stackLayout: ZStackLayout {
+        didSet {
+            setAncestorsNeedLayout()
+        }
+    }
 
     public init(alignment: Alignment = .center) {
         stackLayout = ZStackLayout(alignment: alignment)

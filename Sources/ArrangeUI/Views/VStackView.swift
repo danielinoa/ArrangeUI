@@ -14,7 +14,11 @@ public final class VStackView: LayoutView {
         }
     }
 
-    public var stackLayout: VStackLayout
+    public var stackLayout: VStackLayout {
+        didSet {
+            setAncestorsNeedLayout()
+        }
+    }
 
     public init(alignment: HorizontalAlignment = .center, spacing: Double = .zero) {
         stackLayout = VStackLayout(alignment: alignment, spacing: spacing)

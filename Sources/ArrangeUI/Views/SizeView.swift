@@ -10,10 +10,17 @@ import UIKit
 public class SizeView: UIView {
 
     public let view: UIView
+    public var width: Double? {
+        didSet {
+            setAncestorsNeedLayout()
+        }
+    }
 
-    public let width: Double?
-
-    public let height: Double?
+    public var height: Double? {
+        didSet {
+            setAncestorsNeedLayout()
+        }
+    }
 
     // MARK: - Lifecycle
 

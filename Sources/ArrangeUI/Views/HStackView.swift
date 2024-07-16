@@ -14,7 +14,11 @@ public final class HStackView: LayoutView {
         }
     }
 
-    public var stackLayout: HStackLayout
+    public var stackLayout: HStackLayout {
+        didSet {
+            setAncestorsNeedLayout()
+        }
+    }
 
     public init(alignment: VerticalAlignment = .center, spacing: Double = .zero) {
         stackLayout = HStackLayout(alignment: alignment, spacing: spacing)
