@@ -45,8 +45,8 @@ public extension Arranged {
                 let subviews = node.subnodes.compactMap { $0.constructViewTree() }
                 view.setSubviews(subviews)
             }
-            if let hookNode = arranged as? HookHost {
-                hookNode.process(view)
+            if let hookHost = arranged as? HookHost {
+                hookHost.process(view)
             }
             return view
         default: return nil
