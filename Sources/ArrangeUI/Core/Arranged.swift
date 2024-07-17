@@ -25,7 +25,7 @@ public extension Arranged {
     }
 }
 
-public extension Arranged {
+extension Arranged {
 
     // NOTES
     // -----
