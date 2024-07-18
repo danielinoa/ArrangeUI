@@ -20,7 +20,7 @@ public final class MutationProxyHook<T>: Hook {
 public extension Arranged {
 
     func mutated<T>(by proxy: MutationProxy<T>) -> any Arranged {
-        return MutationProxyHook(proxy: proxy).hosted(content: self)
+        MutationProxyHook(proxy: proxy).hosted(content: self)
     }
 }
 
@@ -28,11 +28,11 @@ import Combine
 
 public final class MutationProxy<W> {
 
-    var objectType: W.Type
-
     public let subject: CurrentValueSubject<W?, Never> = .init(nil)
 
+    private var objectType: W.Type
     fileprivate(set) public var object: W?
+    
     public init() {
         objectType = W.self
     }
