@@ -20,7 +20,7 @@ final class DoHook<T>: Hook {
 
 public extension Arranged {
 
-    func `do`<T>(_ closure: @escaping (T) -> Void) -> Arranged {
+    func `do`<T: UIView>(_ closure: @escaping (T) -> Void) -> Arranged {
         let hook = DoHook<T>(closure)
         return HookHost.init(arrangedContent: self, hook: hook)
     }
