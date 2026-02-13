@@ -31,7 +31,7 @@ Add ArrangeUI to your Swift Package dependencies:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/danielinoa/ArrangeUI.git", branch: "main")
+  .package(url: "https://github.com/danielinoa/ArrangeUI.git", branch: "main")
 ]
 ```
 
@@ -54,9 +54,9 @@ content.addSubview(title)
 content.addSubview(subtitle)
 
 let card = content
-    .padding(16)
-    .background(UIView())
-    .frame(maximumWidth: 320, alignment: .leading)
+  .padding(16)
+  .background(UIView())
+  .frame(maximumWidth: 320, alignment: .leading)
 ```
 
 ## Development Notes

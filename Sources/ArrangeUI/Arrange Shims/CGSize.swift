@@ -7,7 +7,7 @@ import Arrange
 
 public extension CGSize {
 
-    var asSize: Size {
-        .init(width: width, height: height)
-    }
+  var asSize: Size {
+    .init(width: width, height: height)
+  }
 }

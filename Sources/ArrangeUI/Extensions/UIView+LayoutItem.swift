@@ -7,15 +7,15 @@ import UIKit
 
 extension UIView: LayoutItem {
 
-    public var priority: Int {
-        arrangementPriority
-    }
+  public var priority: Int {
+    arrangementPriority
+  }
 
-    public var intrinsicSize: Size {
-        intrinsicContentSize.asSize
-    }
+  public var intrinsicSize: Size {
+    intrinsicContentSize.asSize
+  }
 
-    public func sizeThatFits(_ size: Size) -> Size {
-        sizeThatFits(size.asCGSize).asSize
-    }
+  public func sizeThatFits(_ size: Size) -> Size {
+    sizeThatFits(size.asCGSize).asSize
+  }
 }

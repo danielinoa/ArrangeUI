@@ -6,23 +6,23 @@ import UIKit
 
 public extension UIView {
 
-    func setNeedsArrangement() {
-        setNeedsLayout()
-        if let superview {
-            superview.setNeedsArrangement()
-        } else {
-            cascadeLayoutIfNeeded()
-        }
+  func setNeedsArrangement() {
+    setNeedsLayout()
+    if let superview {
+      superview.setNeedsArrangement()
+    } else {
+      cascadeLayoutIfNeeded()
     }
+  }
 
-    private func cascadeLayoutIfNeeded() {
-        layoutIfNeeded()
-        subviews.forEach { $0.cascadeLayoutIfNeeded() }
-    }
+  private func cascadeLayoutIfNeeded() {
+    layoutIfNeeded()
+    subviews.forEach { $0.cascadeLayoutIfNeeded() }
+  }
 
-    func setAncestorsNeedLayout() {
-        invalidateIntrinsicContentSize() // For instances where views are contained within AutoLayout.
-        setNeedsLayout()
-        superview?.setAncestorsNeedLayout()
-    }
+  func setAncestorsNeedLayout() {
+    invalidateIntrinsicContentSize() // For instances where views are contained within AutoLayout.
+    setNeedsLayout()
+    superview?.setAncestorsNeedLayout()
+  }
 }

@@ -7,7 +7,7 @@ import Arrange
 
 public extension CGRect {
 
-    var asRect: Rectangle {
-        .init(x: minX, y: minY, width: width, height: height)
-    }
+  var asRect: Rectangle {
+    .init(x: minX, y: minY, width: width, height: height)
+  }
 }
