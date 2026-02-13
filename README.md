@@ -1,47 +1,76 @@
 # ArrangeUI
 
-## Introduction
+`ArrangeUI` is a lightweight UIKit wrapper around the [Arrange](https://github.com/danielinoa/Arrange) layout engine.
 
-### What
+The package focuses on view/layout primitives only:
+- `HStackView`
+- `VStackView`
+- `ZStackView`
+- `FrameView`
+- `PaddingView`
+- `OffsetView`
+- `BackgroundView`
+- `SizeView`
+- `SpacerView`
+- `BoundsClampedView`
+- `SafeAreaClampedView`
 
-`ArrangeUI` is a supplemental `UIKit` package made up of views (`HStackView`, `VStackView`, `PaddingView`, `SpacerView`, etc) that employ a `SwiftUI`-like layout strategy.
+The goal is to make SwiftUI-like layout composition available in UIKit, while staying fully `UIView`-based.
 
-This library makes it easy to build layouts that would otherwise be cumbersome to accomplish with resizing-masks, Auto Layout constraints, or raw frame-based layouts.
+## Scope
 
-### How
-
-The layout strategy works as follows: _a parent view proposes a size to its child view, typically its bounds, and the child responds with its ideal fitting size. The parent-view honors the child-view's reported size and positions it accordingly._ 
-To accomplish this `ArrangeUI` views leverage the `UIView`'s existing arrangement methods (`intrinsicContentSize`, `sizeThatFits`, and `layoutSubviews`) and tap into the UIKit view-tree render mechanism.
-
-All `ArrangeUI` views are frame-based under-the-hood and fully compatible with all the aforementioned layout techniques used in UIKit.
-
-### Why
-
-This library is intended for UIKit developers that want to leverage SwiftUI layout strategies but aren't ready or interested in making a full transition to SwiftUI.
-Additionally, this library provides insight into how SwiftUI views and layouts may be implemented under-the-hood.
-
-# Usage
+ArrangeUI currently handles:
+- layout wrappers
+- sizing behavior (`intrinsicContentSize`, `sizeThatFits`)
+- frame placement in `layoutSubviews`
+- small UIView convenience APIs like `padding`, `offset`, `background`, `frame`, and `sized`
 
 ## Installation
 
-To install using Swift Package Manager, add this to the dependencies section in your `Package.swift` file:
+Add ArrangeUI to your Swift Package dependencies:
 
 ```swift
-.package(url: "https://github.com/danielinoa/ArrangeUI.git", .branch("main"))
+dependencies: [
+    .package(url: "https://github.com/danielinoa/ArrangeUI.git", branch: "main")
+]
 ```
 
-## Sample & Demo
+Then add `"ArrangeUI"` to your target dependencies.
 
-_coming soon..._
+## Example
 
-## Notes
+```swift
+import UIKit
+import ArrangeUI
 
-`ArrangeUI`, unlike `SwiftUI`, is exclusively concerned with views and layouts. It does not manage the lifecycle of your view objects and does not opine on how state should be propagated to said views.
+let title = UILabel()
+title.text = "ArrangeUI"
 
-# Contributing
+let subtitle = UILabel()
+subtitle.text = "UIKit + Arrange"
 
-Feel free to open an issue if you have questions about how to use `ArrangeUI`, discovered a bug, or want to improve the implementation or interface.
+let content = VStackView(alignment: .leading, spacing: 8)
+content.addSubview(title)
+content.addSubview(subtitle)
 
-# Credits
+let card = content
+    .padding(16)
+    .background(UIView())
+    .frame(maximumWidth: 320, alignment: .leading)
+```
 
-`ArrangeUI` is primarily the work of [Daniel Inoa](https://github.com/danielinoa).
+## Development Notes
+
+- Platform target: iOS 13+
+- `xcodebuild` is the recommended way to validate iOS builds from CLI.
+
+## Contributing
+
+Issues and PRs are welcome, especially around:
+- layout correctness and edge cases
+- API ergonomics for UIKit composition
+- docs and examples
+
+## Credits
+
+ArrangeUI is primarily the work of [Daniel Inoa](https://github.com/danielinoa).
