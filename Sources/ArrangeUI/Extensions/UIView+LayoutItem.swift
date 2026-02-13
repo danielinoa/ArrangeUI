@@ -2,7 +2,7 @@
 //  Created by Daniel Inoa on 2/5/24.
 //
 
-import Rectangular
+import Arrange
 import UIKit
 
 extension UIView: LayoutItem {

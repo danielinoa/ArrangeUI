@@ -3,6 +3,7 @@
 //
 
 import UIKit
+import Arrange
 
 public final class BackgroundView: UIView {
 
@@ -45,10 +46,17 @@ public final class BackgroundView: UIView {
     }
 }
 
-public extension Arranged {
+public extension UIView {
 
-    func background(alignment: Alignment = .topLeading, _ rearview: () -> UIView) -> Arranged {
-        let frontView = self
-        return BackgroundView(rearview: rearview(), alignment: alignment).arrange(frontView)
+    func background(alignment: Alignment = .topLeading, _ rearview: UIView) -> BackgroundView {
+        let backgroundView = BackgroundView(rearview: rearview, alignment: alignment)
+        backgroundView.addSubview(self)
+        return backgroundView
+    }
+
+    func background(alignment: Alignment = .topLeading, _ rearview: () -> UIView) -> BackgroundView {
+        let backgroundView = BackgroundView(rearview: rearview(), alignment: alignment)
+        backgroundView.addSubview(self)
+        return backgroundView
     }
 }

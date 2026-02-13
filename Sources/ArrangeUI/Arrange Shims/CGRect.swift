@@ -3,7 +3,7 @@
 //
 
 import CoreGraphics
-import Rectangular
+import Arrange
 
 public extension CGRect {
 

@@ -3,7 +3,7 @@
 //
 
 import UIKit
-import Rectangular
+import Arrange
 
 public class PaddingView: LayoutView {
 
@@ -23,7 +23,7 @@ public class PaddingView: LayoutView {
 
     // MARK: - Lifecycle
 
-    public convenience init(_ value: Double) {
+    public convenience init(_ value: Double = .zero) {
         let insets = UIEdgeInsets(top: value, left: value, bottom: value, right: value)
         self.init(insets)
     }
@@ -40,16 +40,14 @@ public class PaddingView: LayoutView {
 
 public extension UIView {
 
-//    func padding(_ value: Double) -> PaddingView {
-//        let insets = UIEdgeInsets(top: value, left: value, bottom: value, right: value)
-//        let paddingView = PaddingView(insets)
-//        paddingView.addSubview(self)
-//        return paddingView
-//    }
-//
-//    func padding(_ insets: UIEdgeInsets) -> PaddingView {
-//        let paddingView = PaddingView(insets)
-//        paddingView.addSubview(self)
-//        return paddingView
-//    }
+    func padding(_ value: Double) -> PaddingView {
+        let insets = UIEdgeInsets(top: value, left: value, bottom: value, right: value)
+        return padding(insets)
+    }
+
+    func padding(_ insets: UIEdgeInsets) -> PaddingView {
+        let paddingView = PaddingView(insets)
+        paddingView.addSubview(self)
+        return paddingView
+    }
 }

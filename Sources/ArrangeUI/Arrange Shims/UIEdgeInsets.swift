@@ -3,7 +3,7 @@
 //
 
 import UIKit
-import Rectangular
+import Arrange
 
 extension UIEdgeInsets {
 

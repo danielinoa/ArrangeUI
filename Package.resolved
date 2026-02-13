@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "arrange",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/danielinoa/Arrange",
+      "state" : {
+        "branch" : "main",
+        "revision" : "eb811cc6e9abc015aa57234c4ee9fb31a3c38719"
+      }
+    },
+    {
       "identity" : "coregraphicsplus",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/danielinoa/CoreGraphicsPlus.git",
@@ -10,30 +19,12 @@
       }
     },
     {
-      "identity" : "rectangular",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/danielinoa/Rectangular",
-      "state" : {
-        "branch" : "main",
-        "revision" : "24d86220c80a007d742844d3acc9f783a261916a"
-      }
-    },
-    {
-      "identity" : "swift-collections",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-collections.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "c60d2f274d61550ca7a80b5306d23235c5f5f85b"
-      }
-    },
-    {
       "identity" : "swiftplus",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/danielinoa/SwiftPlus.git",
       "state" : {
         "branch" : "main",
-        "revision" : "e6031c7a6c6e3ee6f3444e96bfd76119f8141d03"
+        "revision" : "b0b8d5f4c7559406f0ac3235c6813668ef2bcb8c"
       }
     }
   ],

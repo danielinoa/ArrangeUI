@@ -4,4 +4,4 @@
 
 @_exported import CoreGraphicsPlus
 @_exported import SwiftPlus
-@_exported import Rectangular
+@_exported import Arrange

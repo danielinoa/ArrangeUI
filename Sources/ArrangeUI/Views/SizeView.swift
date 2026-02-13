@@ -3,6 +3,7 @@
 //
 
 import UIKit
+import CoreGraphicsPlus
 
 /// A SizeView forces the underlying view to the specified size without considering any size proposal.
 /// Unspecified dimensions will adopt the proposal or the underlying view's intrinsic size dimension.

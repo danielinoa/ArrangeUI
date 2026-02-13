@@ -3,7 +3,7 @@
 //
 
 import UIKit
-import Rectangular
+import Arrange
 
 public class OffsetView: LayoutView {
 
@@ -30,5 +30,14 @@ public class OffsetView: LayoutView {
 
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+public extension UIView {
+
+    func offset(x: Double = .zero, y: Double = .zero) -> OffsetView {
+        let offsetView = OffsetView(x: x, y: y)
+        offsetView.addSubview(self)
+        return offsetView
     }
 }

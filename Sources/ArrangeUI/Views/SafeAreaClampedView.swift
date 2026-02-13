@@ -4,6 +4,7 @@
 
 import UIKit
 import SwiftPlus
+import CoreGraphicsPlus
 
 /// The `SafeAreaClampedView` only honors its subviews preferred-size as long as they don't exceed the safe-area bounds.
 /// Arranged subviews are positioned at the center.

@@ -3,6 +3,8 @@
 //
 
 import UIKit
+import SwiftPlus
+import CoreGraphicsPlus
 
 /// The `BoundsClampedView` only honors its subviews preferred-size as long as they don't exceed the bounds.
 /// Arranged subviews are positioned at the center.
