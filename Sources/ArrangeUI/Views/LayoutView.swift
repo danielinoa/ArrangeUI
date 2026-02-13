@@ -10,7 +10,7 @@ open class LayoutView: UIView {
 
     open var layout: any Layout {
         didSet {
-            applyOverrides()
+            syncSpacerAxisBehavior()
             setAncestorsNeedLayout()
         }
     }
@@ -22,7 +22,7 @@ open class LayoutView: UIView {
     public init(layout: any Layout) {
         self.layout = layout
         super.init(frame: .zero)
-        applyOverrides()
+        syncSpacerAxisBehavior()
     }
     
     public required init?(coder: NSCoder) {
@@ -39,6 +39,18 @@ open class LayoutView: UIView {
         layout.size(fitting: subviews, within: proposedSize.asSize).asCGSize
     }
 
+    open override func didAddSubview(_ subview: UIView) {
+        super.didAddSubview(subview)
+        guard subview is SpacerView else { return }
+        syncSpacerAxisBehavior()
+    }
+
+    open override func willRemoveSubview(_ subview: UIView) {
+        super.willRemoveSubview(subview)
+        guard subview is SpacerView else { return }
+        syncSpacerAxisBehavior()
+    }
+
     open override func layoutSubviews() {
         super.layoutSubviews()
         let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
@@ -52,13 +64,15 @@ open class LayoutView: UIView {
         }
     }
 
-    private func applyOverrides() {
-        subviews.compactCast(to: SpacerView.self).forEach { spacerView in
-            switch layout {
-            case _ as HStackLayout: spacerView.sizeThatFitsOverride = { .init(width: $0.width, height: .zero) }
-            case _ as VStackLayout: spacerView.sizeThatFitsOverride = { .init(width: .zero, height: $0.height) }
-            default: break
-            }
+    private func syncSpacerAxisBehavior() {
+        let inferredBehavior: SpacerView.AxisBehavior = switch layout {
+        case _ as HStackLayout: .horizontal
+        case _ as VStackLayout: .vertical
+        default: .both
+        }
+        
+        subviews.compactCast(to: SpacerView.self).forEach {
+            $0.resolvedAxisBehavior = inferredBehavior
         }
     }
 }
