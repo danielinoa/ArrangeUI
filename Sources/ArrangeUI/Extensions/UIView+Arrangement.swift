@@ -6,23 +6,32 @@ import UIKit
 
 public extension UIView {
 
+  /// Marks this view and all ancestors as needing layout.
+  ///
+  /// This does not force an immediate layout pass.
   func setNeedsArrangement() {
-    setNeedsLayout()
-    if let superview {
-      superview.setNeedsArrangement()
-    } else {
-      cascadeLayoutIfNeeded()
+    setAncestorsNeedLayout()
+  }
+
+  /// Forces an immediate layout pass from the root ancestor.
+  ///
+  /// Prefer `setNeedsArrangement()` unless a synchronous layout is required.
+  func arrangeIfNeededNow() {
+    var root = self
+    while let superview = root.superview {
+      root = superview
     }
+    root.layoutIfNeeded()
   }
 
-  private func cascadeLayoutIfNeeded() {
-    layoutIfNeeded()
-    subviews.forEach { $0.cascadeLayoutIfNeeded() }
-  }
-
+  /// Marks this view and all ancestors as needing layout and invalidates intrinsic size.
   func setAncestorsNeedLayout() {
-    invalidateIntrinsicContentSize() // For instances where views are contained within AutoLayout.
-    setNeedsLayout()
-    superview?.setAncestorsNeedLayout()
+    var current: UIView? = self
+    while let view = current {
+      // Important when arranged views are contained by Auto Layout hierarchies.
+      view.invalidateIntrinsicContentSize()
+      view.setNeedsLayout()
+      current = view.superview
+    }
   }
 }
