@@ -37,11 +37,12 @@ public final class BackgroundView: UIView {
 
   public override func layoutSubviews() {
     super.layoutSubviews()
-    let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
-    let pairs = zip(subviews, frames)
-    pairs.forEach { view, frame in
+    let contentSubviews = subviews.filter { $0 != rearview }
+    let frames = layout.frames(for: contentSubviews, within: bounds.asRect).map(\.asCGRect)
+    zip(contentSubviews, frames).forEach { view, frame in
       view.frame = frame
     }
+    rearview.frame = bounds
     insertSubview(rearview, at: 0)
   }
 }
