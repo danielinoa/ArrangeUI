@@ -6,6 +6,7 @@ import XCTest
 import UIKit
 import ArrangeUI
 
+@MainActor
 final class ArrangeUITests: XCTestCase {
 
   func testHStackLayoutAppliesSpacingAndAlignment() {

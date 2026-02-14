@@ -1,4 +1,5 @@
 {
+  "originHash" : "1a57bc91a55cc3d028f8f320f7c3d44996b3a5146d3f2ecd09dd65b35b29b5a5",
   "pins" : [
     {
       "identity" : "arrange",
@@ -6,7 +7,7 @@
       "location" : "https://github.com/danielinoa/Arrange",
       "state" : {
         "branch" : "main",
-        "revision" : "34c7ba56d8458b643ad48c3c1e1375fb2f8df93a"
+        "revision" : "0b02edfc12b8ba5e1cde4145a817b837553271b2"
       }
     },
     {
@@ -28,5 +29,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
