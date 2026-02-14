@@ -5,7 +5,7 @@
 import Arrange
 import UIKit
 
-extension UIView: LayoutItem {
+extension UIView: @retroactive LayoutItem {
 
   public var priority: Int {
     arrangementPriority
