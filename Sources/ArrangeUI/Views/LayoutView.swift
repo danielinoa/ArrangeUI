@@ -66,8 +66,8 @@ open class LayoutView: UIView {
 
   private func syncSpacerAxisBehavior() {
     let inferredBehavior: SpacerView.AxisBehavior = switch layout {
-    case _ as HStackLayout: .horizontal
-    case _ as VStackLayout: .vertical
+    case _ as HStackLayout, _ as HFlexLayout: .horizontal
+    case _ as VStackLayout, _ as VFlexLayout: .vertical
     default: .both
     }
     

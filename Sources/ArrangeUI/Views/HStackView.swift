@@ -26,6 +26,15 @@ public final class HStackView: LayoutView {
     super.init(layout: stackLayout)
   }
 
+  public convenience init(
+    alignment: VerticalAlignment = .center,
+    spacing: Double = .zero,
+    @UIViewBuilder _ content: () -> [UIView]
+  ) {
+    self.init(alignment: alignment, spacing: spacing)
+    content().forEach(addSubview)
+  }
+
   public required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

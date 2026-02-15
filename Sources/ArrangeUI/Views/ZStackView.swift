@@ -26,6 +26,14 @@ public final class ZStackView: LayoutView {
     super.init(layout: stackLayout)
   }
 
+  public convenience init(
+    alignment: Alignment = .center,
+    @UIViewBuilder _ content: () -> [UIView]
+  ) {
+    self.init(alignment: alignment)
+    content().forEach(addSubview)
+  }
+
   public required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
