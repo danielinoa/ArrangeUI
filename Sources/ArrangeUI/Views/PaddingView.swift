@@ -5,7 +5,7 @@
 import UIKit
 import Arrange
 
-public class PaddingView: LayoutView {
+public final class PaddingView: LayoutView {
 
   public override var layout: Layout {
     get { paddingLayout }

@@ -43,7 +43,9 @@ public final class BackgroundView: UIView {
       view.frame = frame
     }
     rearview.frame = bounds
-    insertSubview(rearview, at: 0)
+    if subviews.first != rearview {
+      insertSubview(rearview, at: 0)
+    }
   }
 }
 

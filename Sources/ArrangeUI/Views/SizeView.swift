@@ -8,7 +8,7 @@ import CoreGraphicsPlus
 /// A SizeView forces the underlying view to the specified size without considering any size proposal.
 /// Unspecified dimensions will adopt the proposal or the underlying view's intrinsic size dimension.
 /// This is different to FrameView, where the wrapped-view is proposed a size and it determines the size that fits best.
-public class SizeView: UIView {
+public final class SizeView: UIView {
 
   public let view: UIView
   public var width: Double? {

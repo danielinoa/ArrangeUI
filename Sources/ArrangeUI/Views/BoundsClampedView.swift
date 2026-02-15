@@ -8,7 +8,7 @@ import CoreGraphicsPlus
 
 /// The `BoundsClampedView` only honors its subviews preferred-size as long as they don't exceed the bounds.
 /// Arranged subviews are positioned at the center.
-public class BoundsClampedView: UIView {
+public final class BoundsClampedView: UIView {
 
   // MARK: - Layout
 

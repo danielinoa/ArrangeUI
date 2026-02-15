@@ -5,7 +5,7 @@
 import UIKit
 import Arrange
 
-public class FrameView: UIView {
+public final class FrameView: UIView {
 
   private var layout: FrameLayout {
     didSet {

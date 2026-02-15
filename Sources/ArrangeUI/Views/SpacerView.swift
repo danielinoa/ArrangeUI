@@ -4,7 +4,7 @@
 
 import UIKit
 
-public class SpacerView: UIView {
+public final class SpacerView: UIView {
 
   /// Controls how a spacer consumes proposed dimensions.
   public enum AxisBehavior {

@@ -5,7 +5,7 @@
 import UIKit
 import Arrange
 
-public class OffsetView: LayoutView {
+public final class OffsetView: LayoutView {
 
   public override var layout: Layout {
     get { offsetLayout }

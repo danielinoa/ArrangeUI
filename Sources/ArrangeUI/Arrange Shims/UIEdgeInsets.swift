@@ -7,7 +7,7 @@ import Arrange
 
 extension UIEdgeInsets {
 
-  var asEdgeInsets: EdgeInsets {
+  public var asEdgeInsets: EdgeInsets {
     .init(top: top, bottom: bottom, left: left, right: right)
   }
 }
