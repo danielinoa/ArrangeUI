@@ -31,7 +31,7 @@ public final class BackgroundView: UIView {
 
   public override func sizeThatFits(_ proposedSize: ProposedSize) -> PreferredSize {
     let subviews = subviews.filter { $0 != rearview } // backview shall not influence the size of this view.
-    let size = layout.size(fitting: subviews, within: proposedSize.asSize).asCGSize
+    let size = layout.size(fitting: subviews, within: .size(proposedSize.asSize)).asCGSize
     return size
   }
 

@@ -15,7 +15,19 @@ extension UIView: @retroactive LayoutItem {
     intrinsicContentSize.asSize
   }
 
-  public func sizeThatFits(_ size: Size) -> Size {
-    sizeThatFits(size.asCGSize).asSize
+  public func sizeThatFits(_ proposal: SizeProposal) -> Size {
+    let width: CGFloat = switch proposal.width {
+    case .fixed(let value): value
+    case .collapsed: .zero
+    case .expanded: .greatestFiniteMagnitude
+    case .unspecified: intrinsicSize.width
+    }
+    let height: CGFloat = switch proposal.height {
+    case .fixed(let value): value
+    case .collapsed: .zero
+    case .expanded: .greatestFiniteMagnitude
+    case .unspecified: intrinsicSize.height
+    }
+    return sizeThatFits(CGSize(width: width, height: height)).asSize
   }
 }

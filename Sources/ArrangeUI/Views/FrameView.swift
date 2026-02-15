@@ -53,7 +53,7 @@ public final class FrameView: UIView {
   }
 
   public override func sizeThatFits(_ proposedSize: CGSize) -> CGSize {
-    layout.size(fitting: subviews, within: proposedSize.asSize).asCGSize
+    layout.size(fitting: subviews, within: .size(proposedSize.asSize)).asCGSize
   }
 
   public override func layoutSubviews() {
