@@ -17,16 +17,16 @@ extension UIView: @retroactive LayoutItem {
 
   public func sizeThatFits(_ proposal: SizeProposal) -> Size {
     let width: CGFloat = switch proposal.width {
-    case .fixed(let value): value
-    case .collapsed: .zero
-    case .expanded: .greatestFiniteMagnitude
-    case .unspecified: intrinsicSize.width
+      case .fixed(let value): value
+      case .collapsed: .zero
+      case .expanded: .greatestFiniteMagnitude
+      case .unspecified: intrinsicSize.width
     }
     let height: CGFloat = switch proposal.height {
-    case .fixed(let value): value
-    case .collapsed: .zero
-    case .expanded: .greatestFiniteMagnitude
-    case .unspecified: intrinsicSize.height
+      case .fixed(let value): value
+      case .collapsed: .zero
+      case .expanded: .greatestFiniteMagnitude
+      case .unspecified: intrinsicSize.height
     }
     return sizeThatFits(CGSize(width: width, height: height)).asSize
   }

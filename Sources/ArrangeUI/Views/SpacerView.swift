@@ -70,12 +70,12 @@ public final class SpacerView: UIView {
     let minLength = max(minLength, .zero)
     let behavior = axisBehavior == .automatic ? resolvedAxisBehavior : axisBehavior
     switch behavior {
-    case .horizontal:
-      return .init(width: proposedSize.width, height: minLength)
-    case .vertical:
-      return .init(width: minLength, height: proposedSize.height)
-    case .both, .automatic:
-      return proposedSize
+      case .horizontal:
+        return .init(width: proposedSize.width, height: minLength)
+      case .vertical:
+        return .init(width: minLength, height: proposedSize.height)
+      case .both, .automatic:
+        return proposedSize
     }
   }
 }
