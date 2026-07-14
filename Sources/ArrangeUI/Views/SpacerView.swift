@@ -4,6 +4,7 @@
 
 import UIKit
 
+/// A flexible view that consumes proposed space along its resolved expansion axes.
 public final class SpacerView: UIView {
 
   /// Controls how a spacer consumes proposed dimensions.

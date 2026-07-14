@@ -12,22 +12,39 @@ extension UIView: @retroactive LayoutItem {
   }
 
   public var intrinsicSize: Size {
-    intrinsicContentSize.asSize
+    normalizedLayoutSize(intrinsicContentSize).asSize
   }
 
   public func sizeThatFits(_ proposal: SizeProposal) -> Size {
+    let intrinsicSize = normalizedLayoutSize(intrinsicContentSize)
     let width: CGFloat = switch proposal.width {
-      case .fixed(let value): value
+      case .fixed(let value): normalizedLayoutDimension(value)
       case .collapsed: .zero
       case .expanded: .greatestFiniteMagnitude
       case .unspecified: intrinsicSize.width
     }
     let height: CGFloat = switch proposal.height {
-      case .fixed(let value): value
+      case .fixed(let value): normalizedLayoutDimension(value)
       case .collapsed: .zero
       case .expanded: .greatestFiniteMagnitude
       case .unspecified: intrinsicSize.height
     }
-    return sizeThatFits(CGSize(width: width, height: height)).asSize
+    return normalizedLayoutSize(sizeThatFits(CGSize(width: width, height: height))).asSize
   }
+}
+
+@MainActor
+private func normalizedLayoutSize(_ size: CGSize) -> CGSize {
+  .init(
+    width: normalizedLayoutDimension(size.width),
+    height: normalizedLayoutDimension(size.height)
+  )
+}
+
+@MainActor
+private func normalizedLayoutDimension(_ value: CGFloat) -> CGFloat {
+  guard value != UIView.noIntrinsicMetric, !value.isNaN else { return .zero }
+  if value == .infinity { return .greatestFiniteMagnitude }
+  guard value.isFinite else { return .zero }
+  return max(value, .zero)
 }

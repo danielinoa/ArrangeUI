@@ -5,12 +5,15 @@
 import UIKit
 import Arrange
 
+/// A container that distributes intrinsic-sized subviews across its vertical bounds.
 public final class VFlexView: LayoutView {
 
   public override var layout: Layout {
     get { flexLayout }
     set {
-      guard let flexLayout = newValue as? VFlexLayout else { return }
+      guard let flexLayout = newValue as? VFlexLayout else {
+        preconditionFailure("VFlexView.layout only accepts VFlexLayout; mutate flexLayout instead.")
+      }
       self.flexLayout = flexLayout
     }
   }

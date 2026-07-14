@@ -6,8 +6,18 @@ import UIKit
 import Arrange
 import SwiftPlus
 
+/// A view that measures and positions its subviews with an Arrange ``Layout``.
 open class LayoutView: UIView {
 
+  /// Receives the proposed frame for every arranged subview.
+  ///
+  /// Assigning a strategy replaces the default frame assignment. The closure is retained by
+  /// the layout view, so capture the view or its owner weakly when referring back to either one.
+  public typealias LayoutSubviewsStrategy = (_ frames: [(view: UIView, frame: CGRect)]) -> Void
+
+  /// The layout used to measure and position the receiver's subviews.
+  ///
+  /// Specialized containers such as ``HStackView`` require their corresponding concrete layout type.
   open var layout: any Layout {
     didSet {
       syncSpacerAxisBehavior()
@@ -15,7 +25,12 @@ open class LayoutView: UIView {
     }
   }
 
-  open var layoutSubviewsStrategy: ((Zip2Sequence<[UIView], [CGRect]>) -> Void)?
+  /// An optional strategy that replaces direct frame assignment during a layout pass.
+  open var layoutSubviewsStrategy: LayoutSubviewsStrategy? {
+    didSet {
+      setNeedsLayout()
+    }
+  }
 
   // MARK: - Lifecycle
 
@@ -41,20 +56,28 @@ open class LayoutView: UIView {
 
   open override func didAddSubview(_ subview: UIView) {
     super.didAddSubview(subview)
-    guard subview is SpacerView else { return }
-    syncSpacerAxisBehavior()
+    if subview is SpacerView {
+      syncSpacerAxisBehavior()
+    }
+    setAncestorsNeedLayout()
   }
 
   open override func willRemoveSubview(_ subview: UIView) {
     super.willRemoveSubview(subview)
-    guard subview is SpacerView else { return }
-    syncSpacerAxisBehavior()
+    if let spacer = subview as? SpacerView {
+      spacer.resolvedAxisBehavior = .both
+    }
+    setAncestorsNeedLayout()
   }
 
   open override func layoutSubviews() {
     super.layoutSubviews()
     let frames = layout.frames(for: subviews, within: bounds.asRect).map(\.asCGRect)
-    let pairs = zip(subviews, frames)
+    precondition(
+      frames.count == subviews.count,
+      "\(type(of: layout)) returned \(frames.count) frames for \(subviews.count) subviews."
+    )
+    let pairs = zip(subviews, frames).map { (view: $0.0, frame: $0.1) }
     if let layoutSubviewsStrategy {
       layoutSubviewsStrategy(pairs)
     } else {

@@ -5,12 +5,15 @@
 import UIKit
 import Arrange
 
+/// A container that distributes intrinsic-sized subviews across its horizontal bounds.
 public final class HFlexView: LayoutView {
 
   public override var layout: Layout {
     get { flexLayout }
     set {
-      guard let flexLayout = newValue as? HFlexLayout else { return }
+      guard let flexLayout = newValue as? HFlexLayout else {
+        preconditionFailure("HFlexView.layout only accepts HFlexLayout; mutate flexLayout instead.")
+      }
       self.flexLayout = flexLayout
     }
   }

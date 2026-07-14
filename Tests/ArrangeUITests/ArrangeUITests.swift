@@ -110,12 +110,21 @@ final class ArrangeUITests: XCTestCase {
   func testBoundsClampedViewClampsChildToBounds() {
     let container = BoundsClampedView()
     let child = FixedSizeView(size: .init(width: 10, height: 10), fittingSize: .init(width: 100, height: 50))
+    let second = FixedSizeView(size: .init(width: 30, height: 5), fittingSize: .init(width: 15, height: 5))
     container.addSubview(child)
+    container.addSubview(second)
+
+    XCTAssertEqual(container.intrinsicContentSize, .init(width: 30, height: 10))
+    XCTAssertEqual(container.sizeThatFits(.init(width: 30, height: 20)), .init(width: 30, height: 20))
 
     container.frame = .init(x: .zero, y: .zero, width: 30, height: 20)
     container.layoutIfNeeded()
 
     XCTAssertEqual(child.frame, .init(x: 0, y: 0, width: 30, height: 20))
+    XCTAssertEqual(second.frame, .init(x: 7.5, y: 7.5, width: 15, height: 5))
+
+    second.removeFromSuperview()
+    XCTAssertEqual(container.intrinsicContentSize, .init(width: 10, height: 10))
   }
 
   func testSafeAreaClampedViewClampsWithinSafeAreaBounds() {
@@ -123,10 +132,51 @@ final class ArrangeUITests: XCTestCase {
     let child = FixedSizeView(size: .init(width: 10, height: 10), fittingSize: .init(width: 200, height: 200))
     container.addSubview(child)
 
+    XCTAssertEqual(container.intrinsicContentSize, .init(width: 10, height: 10))
+    XCTAssertEqual(container.sizeThatFits(.init(width: 100, height: 80)), .init(width: 100, height: 80))
+
     container.frame = .init(x: .zero, y: .zero, width: 100, height: 80)
     container.layoutIfNeeded()
 
     XCTAssertEqual(child.frame, .init(x: 0, y: 0, width: 100, height: 80))
+  }
+
+  func testSafeAreaClampedViewIncludesSafeAreaInsetsInSizing() {
+    let viewController = UIViewController()
+    viewController.additionalSafeAreaInsets = .init(top: 11, left: 7, bottom: 13, right: 5)
+
+    let previousKeyWindow = UIApplication.shared.connectedScenes
+      .compactMap { $0 as? UIWindowScene }
+      .flatMap(\.windows)
+      .first(where: \.isKeyWindow)
+    let window = UIWindow(frame: .init(x: 0, y: 0, width: 390, height: 844))
+    window.rootViewController = viewController
+    window.makeKeyAndVisible()
+    defer {
+      window.isHidden = true
+      previousKeyWindow?.makeKey()
+    }
+
+    let container = SafeAreaClampedView(frame: viewController.view.bounds)
+    let child = FixedSizeView(size: .init(width: 20, height: 10))
+    container.addSubview(child)
+    viewController.view.addSubview(container)
+    viewController.view.layoutIfNeeded()
+    container.layoutIfNeeded()
+
+    let insets = container.safeAreaInsets
+    XCTAssertGreaterThan(insets.top + insets.left + insets.bottom + insets.right, 0)
+    XCTAssertEqual(
+      container.intrinsicContentSize,
+      .init(
+        width: 20 + insets.left + insets.right,
+        height: 10 + insets.top + insets.bottom
+      )
+    )
+
+    let safeBounds = container.bounds.inset(by: insets)
+    XCTAssertEqual(child.bounds.size, .init(width: 20, height: 10))
+    XCTAssertEqual(child.center, .init(x: safeBounds.midX, y: safeBounds.midY))
   }
 
   func testArrangeVariadicAddsSubviewsAndReturnsSelf() {
@@ -154,6 +204,33 @@ final class ArrangeUITests: XCTestCase {
     XCTAssertEqual(stack.subviews, [first, second])
   }
 
+  func testUIViewBuilderSupportsConditionalsAndLoops() {
+    let first = UIView()
+    let conditional = UIView()
+    let fallback = UIView()
+    let repeated = [UIView(), UIView(), UIView()]
+    let last = UIView()
+    let includesConditional = true
+
+    let stack = HStackView {
+      first
+      if includesConditional {
+        conditional
+      }
+      if false {
+        UIView()
+      } else {
+        fallback
+      }
+      for view in repeated {
+        view
+      }
+      last
+    }
+
+    XCTAssertEqual(stack.subviews, [first, conditional, fallback] + repeated + [last])
+  }
+
   func testSpacerAutomaticBehaviorFollowsContainingLayout() {
     let container = LayoutView(layout: HStackLayout())
     let spacer = SpacerView(minLength: 7)
@@ -174,6 +251,82 @@ final class ArrangeUITests: XCTestCase {
     container.addSubview(spacer)
 
     XCTAssertEqual(spacer.sizeThatFits(.init(width: 100, height: 25)), .init(width: 9, height: 25))
+  }
+
+  func testAutomaticSpacerResetsWhenRemovedFromLayoutView() {
+    let container = HStackView()
+    let spacer = SpacerView(minLength: 7)
+    container.addSubview(spacer)
+
+    XCTAssertEqual(spacer.sizeThatFits(.init(width: 120, height: 30)), .init(width: 120, height: 7))
+
+    spacer.removeFromSuperview()
+
+    XCTAssertEqual(spacer.sizeThatFits(.init(width: 120, height: 30)), .init(width: 120, height: 30))
+  }
+
+  func testUIViewLayoutItemNormalizesMissingIntrinsicDimensions() {
+    let missingWidth = FixedSizeView(size: .init(width: UIView.noIntrinsicMetric, height: 12))
+    let missingHeight = FixedSizeView(size: .init(width: 31, height: UIView.noIntrinsicMetric))
+
+    XCTAssertEqual(missingWidth.intrinsicSize, .init(width: 0, height: 12))
+    XCTAssertEqual(missingHeight.intrinsicSize, .init(width: 31, height: 0))
+    XCTAssertEqual(missingWidth.sizeThatFits(.unspecified), .init(width: 0, height: 12))
+    XCTAssertEqual(missingHeight.sizeThatFits(.unspecified), .init(width: 31, height: 0))
+
+    let partiallyIntrinsicStack = HStackView {
+      missingWidth
+      missingHeight
+    }
+    XCTAssertEqual(partiallyIntrinsicStack.intrinsicContentSize, .init(width: 31, height: 12))
+
+    let plainViewStack = HStackView {
+      UIView()
+    }
+    XCTAssertEqual(plainViewStack.intrinsicContentSize, .zero)
+  }
+
+  func testTypedLayoutAssignmentAppliesCompatibleLayout() {
+    let stack = HStackView()
+
+    stack.layout = HStackLayout(alignment: .bottom, spacing: 11)
+
+    XCTAssertEqual(stack.stackLayout.alignment, .bottom)
+    XCTAssertEqual(stack.stackLayout.spacing, 11)
+  }
+
+  func testLayoutSubviewsStrategyReceivesOrderedFrameSnapshot() {
+    let first = FixedSizeView(size: .init(width: 20, height: 10))
+    let second = FixedSizeView(size: .init(width: 30, height: 15))
+    let stack = HStackView(spacing: 5) {
+      first
+      second
+    }
+    stack.frame = .init(x: 0, y: 0, width: 100, height: 40)
+    stack.layoutIfNeeded()
+
+    var received: [(view: UIView, frame: CGRect)] = []
+    stack.layoutSubviewsStrategy = { placements in
+      received = placements
+    }
+    first.frame = .zero
+    second.frame = .zero
+
+    stack.layoutIfNeeded()
+
+    XCTAssertEqual(received.map(\.view), [first, second])
+    XCTAssertEqual(received.map(\.frame), [
+      .init(x: 0, y: 15, width: 20, height: 10),
+      .init(x: 25, y: 12.5, width: 30, height: 15),
+    ])
+    XCTAssertEqual(first.frame, .zero)
+    XCTAssertEqual(second.frame, .zero)
+
+    stack.layoutSubviewsStrategy = nil
+    stack.layoutIfNeeded()
+
+    XCTAssertEqual(first.frame, received[0].frame)
+    XCTAssertEqual(second.frame, received[1].frame)
   }
 
   func testFlowAndFlexBuilderConvenienceInitializersAttachSubviews() {

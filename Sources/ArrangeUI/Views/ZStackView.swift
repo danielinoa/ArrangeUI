@@ -5,12 +5,15 @@
 import UIKit
 import Arrange
 
+/// A container that overlays its subviews using a shared two-dimensional alignment.
 public final class ZStackView: LayoutView {
 
   public override var layout: Layout {
     get { stackLayout }
     set {
-      guard let stackLayout = newValue as? ZStackLayout else { return }
+      guard let stackLayout = newValue as? ZStackLayout else {
+        preconditionFailure("ZStackView.layout only accepts ZStackLayout; mutate stackLayout instead.")
+      }
       self.stackLayout = stackLayout
     }
   }

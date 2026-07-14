@@ -5,12 +5,15 @@
 import UIKit
 import Arrange
 
+/// A container that measures and positions its subviews within fixed edge insets.
 public final class PaddingView: LayoutView {
 
   public override var layout: Layout {
     get { paddingLayout }
     set {
-      guard let paddingLayout = newValue as? PaddingLayout else { return }
+      guard let paddingLayout = newValue as? PaddingLayout else {
+        preconditionFailure("PaddingView.layout only accepts PaddingLayout; mutate paddingLayout instead.")
+      }
       self.paddingLayout = paddingLayout
     }
   }

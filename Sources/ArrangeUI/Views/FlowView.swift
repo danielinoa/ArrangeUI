@@ -5,12 +5,15 @@
 import UIKit
 import Arrange
 
+/// A container that wraps intrinsic-sized subviews into horizontal rows.
 public final class FlowView: LayoutView {
 
   public override var layout: Layout {
     get { flowLayout }
     set {
-      guard let flowLayout = newValue as? FlowLayout else { return }
+      guard let flowLayout = newValue as? FlowLayout else {
+        preconditionFailure("FlowView.layout only accepts FlowLayout; mutate flowLayout instead.")
+      }
       self.flowLayout = flowLayout
     }
   }

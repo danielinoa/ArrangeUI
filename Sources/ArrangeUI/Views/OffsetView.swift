@@ -5,12 +5,15 @@
 import UIKit
 import Arrange
 
+/// A container that offsets its subviews without changing its measured size.
 public final class OffsetView: LayoutView {
 
   public override var layout: Layout {
     get { offsetLayout }
     set {
-      guard let offsetLayout = newValue as? OffsetLayout else { return }
+      guard let offsetLayout = newValue as? OffsetLayout else {
+        preconditionFailure("OffsetView.layout only accepts OffsetLayout; mutate offsetLayout instead.")
+      }
       self.offsetLayout = offsetLayout
     }
   }

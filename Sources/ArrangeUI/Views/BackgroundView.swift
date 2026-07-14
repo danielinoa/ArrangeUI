@@ -5,6 +5,7 @@
 import UIKit
 import Arrange
 
+/// A container that lays out content over a full-bounds rear view that doesn't affect sizing.
 public final class BackgroundView: UIView {
 
   private let layout: ZStackLayout

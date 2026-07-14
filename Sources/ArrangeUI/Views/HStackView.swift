@@ -5,12 +5,15 @@
 import UIKit
 import Arrange
 
+/// A container that arranges subviews sequentially along the horizontal axis.
 public final class HStackView: LayoutView {
 
   public override var layout: Layout {
     get { stackLayout }
     set {
-      guard let stackLayout = newValue as? HStackLayout else { return }
+      guard let stackLayout = newValue as? HStackLayout else {
+        preconditionFailure("HStackView.layout only accepts HStackLayout; mutate stackLayout instead.")
+      }
       self.stackLayout = stackLayout
     }
   }

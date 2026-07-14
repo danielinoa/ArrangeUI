@@ -5,6 +5,7 @@
 import UIKit
 import Arrange
 
+/// A container that gives its subviews a fixed or min/max-constrained layout region.
 public final class FrameView: UIView {
 
   private var layout: FrameLayout {
